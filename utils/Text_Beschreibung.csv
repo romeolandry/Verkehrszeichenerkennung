@@ -1,0 +1,44 @@
+ClassId,SignName
+0,Zulässige Höchstgeschwindigkeit (20 km/h)
+1,Zulässige Höchstgeschwindigkeit (30 km/h)
+2,Zulässige Höchstgeschwindigkeit (50 km/h)
+3,Zulässige Höchstgeschwindigkeit (60 km/h)
+4,Zulässige Höchstgeschwindigkeit (70 km/h)
+5,Zulässige Höchstgeschwindigkeit (80 km/h)
+6,End der zulässige Höchstgeschwindigkeit (80 km/h)
+7,Zulässige Höchstgeschwindigkeit (100 km/h)
+8,Zulässige Höchstgeschwindigkeit (120 km/h)
+9,Überholverbot
+10,Überholverbot für Kraftfahrzeuge über 3.5t
+11, Verbot für Fahrzeuge aller Art
+12,Vorfahrtstraße
+13,Vorfahrt gewähren
+14,Stop
+15,Verbot für Fahrzeuge aller Art
+16,Verbot für Kraftfahrzeuge
+17,Verbot der Einfahrt
+18,Gefahrzeichen
+19,Kurve(Link)
+20,Kurve(Rechts)
+21,Doppelkurve
+22,unebene Fahrbahn
+23,Schluedergefahr bei Nässe oder Schmutz
+24,einseitig (rechs) verengte Fahrbahn
+25,Baustelle
+26,Lichtzeichenanlage
+27,Fußgänger
+28,Kinder
+29,Radverkehr
+30,Schnee- oder Eisglätte
+31,Willdwechsel
+32,Ende aller Geswindigkeits und Überholverbote
+33,vorgeschriebene Fahrtrichtung (rechts)
+34,vorgeschriebene Fahrtrichtung (links)
+35,vorgeschriebene Fahrtrichtung (geradeaus)
+36, vorgeschriebene Fahrtrichtung( geradeaus und rechts)
+37,vorgeschriebene Fahrtrichtung (geradeaus und links)
+38,vorgeschriebene Vorbeifahrt (rechts vorbei)
+39,vorgeschriebene Vorbeifahrt (links vorbei)
+40,Kreisverkehr
+41,Ende des Überholverbotes für Kraftfahrzeuge aller Art
+42, Ende des Überholverbotes für Kraftfahrzeuge über 3.5t
