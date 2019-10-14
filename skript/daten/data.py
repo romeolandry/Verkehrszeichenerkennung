@@ -91,9 +91,8 @@ class Data_vorbebreitung:
         return self.__sign_names[index][1]
 
     def display_roadsign_classes(self, images, max_image):
-        print("###############################display")
         plt.rc('font', size=6)
-        plt.rcParams["figure.figsize"] = (10, 10)
+        plt.rcParams["figure.figsize"] = (10, 5)  # (10, 5) (with, heigth)
         fig, axarr = plt.subplots(6, 8)
         num = 0
         for i in range(0, 6):
@@ -107,7 +106,7 @@ class Data_vorbebreitung:
                                           roadsign_name)
                     num += 1
         fig.suptitle('German Traffic Sign recongnisation Benchmark',
-                     fontsize=16, fontweight="bold")
+                     fontsize=16, fontweight="bold", y=0.1)
         plt.subplots_adjust(hspace=1)
         plt.show()
 
