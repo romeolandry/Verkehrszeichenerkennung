@@ -85,7 +85,7 @@ class Data_vorbebreitung:
         images = np.array(images)
         labels = np_utils.to_categorical(labels,
                                          num_classes=num_raodsign_classes)
-        return images, labels
+        return images, labels, num_raodsign_classes
 
     def get_roadsign_name(self, index):
         return self.__sign_names[index][1]
@@ -109,16 +109,3 @@ class Data_vorbebreitung:
                      fontsize=16, fontweight="bold", y=0.1)
         plt.subplots_adjust(hspace=1)
         plt.show()
-
-
-dt_vb = Data_vorbebreitung("/home/kamgo/Donnees/Master_projekt/TensorRT" +
-                           "/Verkehrszeichnerkennung/Daten/" +
-                           "Final_Training/Images", 45,
-                           "/home/kamgo/Donnees/" +
-                           "Master_projekt/TensorRT/Verkehrszeichnerkennung/" +
-                           "utils/Text_Beschreibung.csv")
-# img, lab = dt_vb.read_traffic()
-img, labels = dt_vb.load_roadsigns_data()
-dt_vb.display_roadsign_classes(img, 10)
-# print(img[0])
-# print("label of this image {}".format(labels[0]))

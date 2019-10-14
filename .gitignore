@@ -105,3 +105,6 @@ venv.bak/
 
 # Daten
 /Daten
+#Model_weight
+*.h5
+
