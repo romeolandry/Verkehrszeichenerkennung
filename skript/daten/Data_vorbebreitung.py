@@ -3,6 +3,7 @@ import csv
 import matplotlib.pyplot as plt
 import numpy as np
 import PIL
+import random
 
 from PIL import Image
 from pandas import read_csv
@@ -74,6 +75,7 @@ class Data_vorbebreitung:
             with open(file_path, 'r', newline='') as gt_file:
                 gt_reader = csv.reader(gt_file, delimiter=';')
                 next(gt_reader)  # header skipt of csv-file s
+                count = 0
                 for row in gt_reader:
                     # das erste Bild von jedem orden wird immer angezeigt.
                     jpg_file = Image.open(prefix + row[0])
@@ -81,6 +83,9 @@ class Data_vorbebreitung:
                     gs_image = self.prepocess_img(jpg_file)
                     images.append(gs_image)
                     labels.append(row[7])
+                    count += 1
+                    if count == 100:
+                        break
 
         images = np.array(images)
         labels = np_utils.to_categorical(labels,
@@ -108,4 +113,79 @@ class Data_vorbebreitung:
         fig.suptitle('German Traffic Sign recongnisation Benchmark',
                      fontsize=16, fontweight="bold", y=0.1)
         plt.subplots_adjust(hspace=1)
+        plt.show()
+
+    def load_image_test(self):
+        # read csv_Datei zur sign_names
+        with open(self.__path_to_description, 'r', newline='') as desc:
+            desc_reader = csv.reader(desc, delimiter=',')
+            next(desc_reader)
+            for row in desc_reader:
+                self.__sign_names.append(row)
+
+        image_to_predict = []
+        match_list = []
+        pictures_directories = [pic for pic in os.listdir(self.__path_to_gtsrb)
+                                if not pic.startswith(".")]
+        num_raodsign_classes = len(pictures_directories)
+        for n, directory_path, in enumerate(random.sample(pictures_directories,
+                                            num_raodsign_classes)):
+            directory_path = os.path.join(self.__path_to_gtsrb, directory_path)
+            image = self.prepocess_img(Image.open(directory_path +
+                                                  "/00002_00021.ppm"))
+            image_to_predict.append(image)
+            match_list.append(n)
+        return image_to_predict, match_list
+
+    def frame_image(self, img, color_name):
+
+        if(color_name == "green"):
+            color = (0.0, 125.0, 0.0)
+        else:
+            if(color_name == "red"):
+                color = (125.0, 0.0, 0.0)
+
+        border_size = 5
+        ny, nx = img.shape[0], img.shape[1]
+
+        if img.ndim == 3:
+            framed_img = np.full((border_size+ny+border_size,
+                                  border_size+nx+border_size, img.shape[2]),
+                                 color)
+        framed_img[border_size:-border_size, border_size:-border_size] = img
+
+        return framed_img
+
+    def display_prediction_vs_real_classes(self, roadsign_images, match_list,
+                                           predicted_classes):
+        roadsign_lables = []
+        predicted_labels = []
+        for prediction in zip(roadsign_images, match_list, predicted_classes):
+            # Reale Wert
+            roadsign_lables.append("\n".join(wrap(
+                self.get_roadsign_name(prediction[1]), 15)))
+            # predict Wert
+            predicted_labels.append("\n".join(wrap(
+                                                   self.get_roadsign_name(
+                                                       prediction[2]), 15)))
+        plt.rc('font', size=12)
+        plt.rcParams["figure.figsize"] = (10, 5)  # (10, 5) (with, heigth)
+        fig, axarr = plt.subplots(1, 10, squeeze=False)
+        num = 0
+        for i in range(0, 10):
+            roadsign_name = roadsign_lables[num]
+            predicted_roadsign_name = predicted_labels[num]
+
+            color = "red"
+            if(roadsign_name == predicted_roadsign_name):
+                color = "green"
+            axarr[0][i].text(0, 60, "\nReal:\n" + roadsign_name +
+                             "\n\nErkannt :\n" + str(predicted_roadsign_name),
+                             color=color, verticalalignment='top',
+                             horizontalalignment='left')
+            image = self.frame_image(roadsign_images[num], color)
+            axarr[0][i].imshow(image)
+            axarr[0][i].axis('off')
+            num += 1
+        fig.suptitle('Ergebnisse', fontsize=16, fontweight="bold")
         plt.show()
