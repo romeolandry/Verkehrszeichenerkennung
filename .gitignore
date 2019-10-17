@@ -108,4 +108,8 @@ venv.bak/
 #Model_weight
 *.h5
 *.hdf5
+# env
+/tensorRT
+# workspace
+.vscode
 
