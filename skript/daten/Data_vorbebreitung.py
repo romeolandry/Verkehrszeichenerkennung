@@ -75,7 +75,6 @@ class Data_vorbebreitung:
             with open(file_path, 'r', newline='') as gt_file:
                 gt_reader = csv.reader(gt_file, delimiter=';')
                 next(gt_reader)  # header skipt of csv-file s
-                count = 0
                 for row in gt_reader:
                     # das erste Bild von jedem orden wird immer angezeigt.
                     jpg_file = Image.open(prefix + row[0])
@@ -83,10 +82,6 @@ class Data_vorbebreitung:
                     gs_image = self.prepocess_img(jpg_file)
                     images.append(gs_image)
                     labels.append(row[7])
-                    count += 1
-                    if count == 100:
-                        break
-
         images = np.array(images)
         labels = np_utils.to_categorical(labels,
                                          num_classes=num_raodsign_classes)

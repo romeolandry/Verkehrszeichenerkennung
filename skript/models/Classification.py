@@ -56,8 +56,8 @@ class Classification_test:
         print("das Model wird aufgebaut und compile")
         model = self.build_model()
         model.load_weights(self.__path_to_save)
-        model.compile(loss=loss, optimizer=optimizer,
-                      metrics=metric)
+        """ model.compile(loss=loss, optimizer=optimizer,
+                      metrics=metric) """
         roadsign_images = []
         predicted_class = []
         print("prediction")
@@ -93,10 +93,16 @@ class Classification(Classification_test):
 
     def train_model(self, model, train_images, train_labels):
         # Early stopping complex
-        es = EarlyStopping(monitor='val_loss', mode='min', verbose=1)
+        es = EarlyStopping(monitor='val_loss',
+                           mode='min',
+                           verbose=1,
+                           patience=500)
         # modelcheckpoint
-        mc = ModelCheckpoint(super().get_path_to_save(), monitor='val_loss',
-                             mode='min', save_best_only=True, verbose=1)
+        mc = ModelCheckpoint(super().get_path_to_save(),
+                             monitor='val_accuracy',
+                             mode='max',
+                             save_best_only=True,
+                             verbose=1)
         self.compile_model(model)
         print("______________Anfang des Trainings____________________")
         model.fit(train_images, train_labels,
@@ -105,6 +111,6 @@ class Classification(Classification_test):
                   validation_split=self.__validation_split,
                   callbacks=[es, mc])
         print("training fertig")
-        print("saving...")
-        # model.save()
-        print("saved")
+        """ print("saving...")
+        model.save(super().get_path_to_save())
+        print("saved") """

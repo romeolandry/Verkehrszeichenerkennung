@@ -16,7 +16,7 @@ parser = OptionParser()
 path_to_class_beschreibung = os.path.join(base_path, '../utils/' +
                                           'Text_Beschreibung.csv')
 path_to_model = os.path.join(base_path, '../Model_weight/' +
-                             'signs_model_Kalssifikation_{}.hdf5'.format(
+                             'signs_model_Kalssifikation_{}.h5'.format(
                                  datetime.datetime.now().strftime(
                                      "%Y_%m_%d_%H_%M_%S")))
 parser.add_option("-m", "--mode",
@@ -62,7 +62,7 @@ pafdsmodel = options.pafdsmodel
 
 IMG_SIZE = 48
 NUM_BATCH = 64
-NUM_EPOCHS = 1000
+NUM_EPOCHS = 4000
 verborse = 1
 validation_split = 0.2
 lernrate = 0.001
@@ -85,8 +85,6 @@ if run_mode == 'train':
         train_labels, classes) = data_vorbereitung.load_roadsigns_data()
     print("Daten eingelesen!")
     # data_vorbereitung.display_roadsign_classes(train_images, 43)
-    print("beispiel von Labelskalssen: {}".format(train_labels[3]))
-
     # Vorbereitung des Models
     print("Aufbau des Models!")
     train_model = Classification(path_to_model, IMG_SIZE, classes, loss,

@@ -104,12 +104,13 @@ venv.bak/
 .mypy_cache/
 
 # Daten
-/Daten
+/Daten/Final_Training
 #Model_weight
 *.h5
 *.hdf5
 # env
 /tensorRT
+/tensorRT3.6
 # workspace
 .vscode
 
