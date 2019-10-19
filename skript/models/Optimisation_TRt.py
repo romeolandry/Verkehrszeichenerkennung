@@ -1,5 +1,6 @@
 import tensorflow as tf
 import tensorflow.contrib.tensorrt as trt
+import config as cfg
 
 from tensorflow.keras.models import load_model
 from tensorflow.python.platform import gfile
@@ -7,9 +8,9 @@ from utils import *
 
 
 class Optimisation_TRT:
-    def __init__(self, __path_tf_model, path_h5_model,
+    def __init__(self, path_tf_model, path_h5_model,
                  path_rt_opt_model, path_to_frozen_model):
-        self.__path_tf_model = __path_tf_model
+        self.__path_tf_model = path_tf_model
         self.__path_h5_model = path_h5_model
         self.__path_rt_opt_model = path_rt_opt_model
         self.__path_to_frozen_model = path_to_frozen_model
@@ -39,7 +40,7 @@ class Optimisation_TRT:
         """
         # set the memory fraction eg. 0.2 meaning tf use 20% of gpu and
         # the will bei Trt
-        gpu_option = tf.GPUOptions(per_process_gpu_memory_fraction=0.50)
+        gpu_option = tf.GPUOptions(per_process_gpu_memory_fraction=cfg.tf_allcation)
         with tf.Session(config=tf.ConfigProto(gpu_options=gpu_option)) as sess:
             # import of meta graph fo tensorflow model
             path_meta_file = self.__path_tf_model + meta_file_name
