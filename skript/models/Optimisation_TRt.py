@@ -4,26 +4,45 @@ import config as cfg
 
 from tensorflow.keras.models import load_model
 from tensorflow.python.platform import gfile
+from tensorflow.compat.v1.graph_util import convert_variables_to_constants
 from utils import *
 
 
 class Optimisation_TRT:
-    def __init__(self, path_tf_model, path_h5_model,
-                 path_rt_opt_model, path_to_frozen_model):
-        self.__path_tf_model = path_tf_model
+    def __init__(self,
+                 path_h5_model,
+                 path_tf_model,
+                 path_rt_opt_model,
+                 path_to_frozen_model):
+
         self.__path_h5_model = path_h5_model
+        self.__path_tf_model = path_tf_model
         self.__path_rt_opt_model = path_rt_opt_model
         self.__path_to_frozen_model = path_to_frozen_model
 
-    def keras_to_tensor_model(self):
+    def keras_to_tensor_model(self, train_config):
         """
         diese Funktion wird ein Keras-Model in ein Tensor-Model
         Umwandeln
         """
+        """ da die Batchnormalisation-Parameter im Keras
+        als trainable parameter gespeichert sind, mussen wird diese als
+        non_trainable zurücksetzen
+        """
+        if train_config:
+            tf.keras.backend.set_learning_phase(0)
+
         print("Keras-Model wird hochgeladen!")
-        model = load_model(self.__path_h5_model)
+        try:
+            model = load_model(self.__path_h5_model)
+        except FileNotFoundError:
+            print("Kein h5 Datei wurde gefunden!")
+            exit()
+
         print("Umwandlung vom Keras zu Tensor-Model..")
-        saver = tf.train.saver()
+        # model.summary()
+        # [print(node.op.name) for node in model.outputs]
+        saver = tf.train.Saver()
         # keras session wird als tf- Session gelesen!
         sess = tf.keras.backend.get_session()
         # die Graph der Tf-Session wird gespeichert
@@ -45,19 +64,24 @@ class Optimisation_TRT:
             # import of meta graph fo tensorflow model
             path_meta_file = self.__path_tf_model + meta_file_name
             saver = tf.train.import_meta_graph(path_meta_file)
+            # print(graph)
+            # exit()
             # restore the weights to the meta graph
             saver.restore(sess, self.__path_tf_model)
 
             # specify the tensor output of the model
-            output_models = [output_model]
-
+            output_models = [n.name for
+                             n in tf.get_default_graph().as_graph_def().node
+                             if n.name !=
+                             'conv2d/kernel_1/Read/ReadVariableOp']
+            # print(output_models)
+            # exit()
             # convert to frozen model
             print("Frozen model ergestellt!")
-            frozen_graph = tf.graph_util.convert_variables_to_constants(
+            frozen_graph = convert_variables_to_constants(
                 sess,
                 tf.get_default_graph().as_graph_def(),
-                output_node_names=output_models
-            )
+                output_node_names=output_models)
 
             # save the frozen graph
             print("speichert!")

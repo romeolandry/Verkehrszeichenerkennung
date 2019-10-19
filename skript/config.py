@@ -20,7 +20,7 @@ path_to_model = os.path.join(base_path, '../Models/Keras-Model/' +
 # Model Training und Test
 IMG_SIZE = 48
 NUM_BATCH = 64
-NUM_EPOCHS = 1000
+NUM_EPOCHS = 15
 verborse = 1
 validation_split = 0.2
 lernrate = 0.001
@@ -29,9 +29,9 @@ loss = 'categorical_crossentropy'
 metrics = ["accuracy"]
 
 # Tensorflow -> tensortRT
-path_tf_model = os.path.join(base_path, '../Models/Tensor-Model/')
+path_tf_model = os.path.join(base_path, '../Models/Tensor-Model/tf_model')
 path_h5_model = os.path.join(base_path, '../Models/Keras-Model/')
-path_rt_opt_model = os.path.join(base_path, '/Models/RT-Model/')
+path_rt_opt_model = os.path.join(base_path, '/Models/RT-Model/rt_model')
 path_to_frozen_model = os.path.join(base_path, '')
 
 # config gpu

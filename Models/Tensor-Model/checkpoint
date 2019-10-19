@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/kamgo/Donnees/Master_projekt/TensorRT/Verkehrszeichnerkennung/skript/../Models/Tensor-Model/tf_model"
+all_model_checkpoint_paths: "/home/kamgo/Donnees/Master_projekt/TensorRT/Verkehrszeichnerkennung/skript/../Models/Tensor-Model/tf_model"

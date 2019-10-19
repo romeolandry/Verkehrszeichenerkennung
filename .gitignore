@@ -114,3 +114,7 @@ venv.bak/
 # workspace
 .vscode
 
+# tensorflow TensorRT
+/Tensor-Model
+/RT-Model
+

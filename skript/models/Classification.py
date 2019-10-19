@@ -1,10 +1,13 @@
 import numpy as np
 import os
+from datetime import datetime
 from tensorflow.python.keras.models import Sequential, load_model
 from tensorflow.python.keras.layers import (InputLayer, Dropout,
                                             BatchNormalization, MaxPooling2D,
                                             Conv2D, Flatten, Dense)
-from tensorflow.python.keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow.python.keras.callbacks import (EarlyStopping,
+                                               ModelCheckpoint,
+                                               TensorBoard)
 
 
 class Classification_test:
@@ -92,6 +95,9 @@ class Classification(Classification_test):
                       metrics=self.__metrics)
 
     def train_model(self, model, train_images, train_labels):
+        # Define the Keras TensorBoard callback.
+        # logdir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+        # tensorboard_callback = TensorBoard(log_dir=logdir)
         # Early stopping complex
         es = EarlyStopping(monitor='val_loss',
                            mode='min',
@@ -109,7 +115,7 @@ class Classification(Classification_test):
                   epochs=self.__Num_epochs,
                   batch_size=self.__batch_size, verbose=1,
                   validation_split=self.__validation_split,
-                  callbacks=[es, mc])
+                  callbacks=[es, mc, tensorboard_callback])
         print("training fertig")
         """ print("saving...")
         model.save(super().get_path_to_save())
