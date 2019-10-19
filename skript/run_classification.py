@@ -15,7 +15,7 @@ parser = OptionParser()
 
 path_to_class_beschreibung = os.path.join(base_path, '../utils/' +
                                           'Text_Beschreibung.csv')
-path_to_model = os.path.join(base_path, '../Model_weight/' +
+path_to_model = os.path.join(base_path, '../Models/Keras-Model/' +
                              'signs_model_Kalssifikation_{}.h5'.format(
                                  datetime.datetime.now().strftime(
                                      "%Y_%m_%d_%H_%M_%S")))
@@ -62,7 +62,7 @@ pafdsmodel = options.pafdsmodel
 
 IMG_SIZE = 48
 NUM_BATCH = 64
-NUM_EPOCHS = 4000
+NUM_EPOCHS = 1000
 verborse = 1
 validation_split = 0.2
 lernrate = 0.001
