@@ -20,7 +20,7 @@ path_to_model = os.path.join(base_path, '../Models/Keras-Model/' +
 # Model Training und Test
 IMG_SIZE = 48
 NUM_BATCH = 64
-NUM_EPOCHS = 15
+NUM_EPOCHS = 1000
 verborse = 1
 validation_split = 0.2
 lernrate = 0.001

@@ -115,7 +115,7 @@ class Classification(Classification_test):
                   epochs=self.__Num_epochs,
                   batch_size=self.__batch_size, verbose=1,
                   validation_split=self.__validation_split,
-                  callbacks=[es, mc, tensorboard_callback])
+                  callbacks=[es, mc])
         print("training fertig")
         """ print("saving...")
         model.save(super().get_path_to_save())
