@@ -35,7 +35,13 @@ path_rt_opt_model = os.path.join(base_path, '/Models/RT-Model/')
 path_to_frozen_model = os.path.join(base_path, '')
 
 # config gpu
-tf_allocation = 0.5
+# tensorflow allocation memory
+tf_all = 0.5
+
+max_batch_size = 2
+max_workspace_size_bytes = 2*(10**9)
+# FP32 FP16 int8
+precision_mode = "FP32"
 
 # tensorflow model
 meta_file_name = ''

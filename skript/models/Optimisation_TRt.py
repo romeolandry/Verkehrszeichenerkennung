@@ -40,7 +40,7 @@ class Optimisation_TRT:
         """
         # set the memory fraction eg. 0.2 meaning tf use 20% of gpu and
         # the will bei Trt
-        gpu_option = tf.GPUOptions(per_process_gpu_memory_fraction=cfg.tf_allcation)
+        gpu_option = tf.GPUOptions(per_process_gpu_memory_fraction=cfg.tf_all)
         with tf.Session(config=tf.ConfigProto(gpu_options=gpu_option)) as sess:
             # import of meta graph fo tensorflow model
             path_meta_file = self.__path_tf_model + meta_file_name
@@ -65,10 +65,7 @@ class Optimisation_TRT:
             print("Frozen model wurde gespeichert!")
 
     def trt_model_von_frozen_graph(self,
-                                   output_model,
-                                   max_batch_size,
-                                   max_workspace_size_bytes,
-                                   precision_mode):
+                                   output_model):
         """
         Die Funktion wird frozen lesen und daraus ein TensorRT-Model
         aufbauen
@@ -85,11 +82,11 @@ class Optimisation_TRT:
             # output vom Model
             outputs=[output_model],
             # kann ein integer sein
-            max_batch_size=max_batch_size,
+            max_batch_size=cfg.max_batch_size,
             # 2*(10**9)
-            max_workspace_size_bytes=max_workspace_size_bytes,
+            max_workspace_size_bytes=cfg.max_workspace_size_bytes,
             # "FP32"
-            precision_mode=precision_mode
+            precision_mode=cfg.precision_mode
         )
         print("TensorRT model wird gespeichert!")
         save_graph(self.__path_rt_opt_model)
