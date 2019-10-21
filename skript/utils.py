@@ -10,7 +10,7 @@ def save_graph(path, frozen_graph):
         f.write(frozen_graph.SerializeToString())
 
 
-def lord_model_graph(paht):
+def lord_model_graph(path):
     """
      die Funktion hilf die .pb-Datei zu lesen
     """

@@ -29,9 +29,11 @@ loss = 'categorical_crossentropy'
 metrics = ["accuracy"]
 
 # Tensorflow -> tensortRT
+tensor_frozen_name = "tf_frozen_model.pb"
+rt_frozen_name = ""
 path_tf_model = os.path.join(base_path, '../Models/Tensor-Model/tf_model')
 path_h5_model = os.path.join(base_path, '../Models/Keras-Model/')
-path_rt_opt_model = os.path.join(base_path, '/Models/RT-Model/rt_model')
+path_trt_opt_model = os.path.join(base_path, '/Models/RT-Model/TRT_Model.pd')
 path_to_frozen_model = os.path.join(base_path, '')
 
 # config gpu
@@ -44,5 +46,5 @@ max_workspace_size_bytes = 2*(10**9)
 precision_mode = "FP32"
 
 # tensorflow model
-meta_file_name = ''
-output_model = ''
+output_model = {}
+input_model = {}
