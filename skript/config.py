@@ -11,9 +11,10 @@ path_to_class_beschreibung = os.path.join(base_path, '../Daten/utils/' +
                                           'Text_Beschreibung.csv')
 classes_count = 43
 
+keras_model_name = "keras_model"
 # Pfad zur Speicherung des Keras-Models
 path_to_model = os.path.join(base_path, '../Models/Keras-Model/' +
-                             'signs_model_Kalssifikation_{}.h5'.format(
+                             keras_model_name + ' _{}.h5'.format(
                                  datetime.datetime.now().strftime(
                                      "%Y_%m_%d_%H_%M_%S")))
 
@@ -24,17 +25,19 @@ NUM_EPOCHS = 1000
 verborse = 1
 validation_split = 0.2
 lernrate = 0.001
+patience = 200
+
 
 loss = 'categorical_crossentropy'
 metrics = ["accuracy"]
 
 # Tensorflow -> tensortRT
 tensor_frozen_name = "tf_frozen_model.pb"
-rt_frozen_name = ""
+rt_frozen_name = "rt_frozen_model.pb"
+
 path_tf_model = os.path.join(base_path, '../Models/Tensor-Model/tf_model')
 path_h5_model = os.path.join(base_path, '../Models/Keras-Model/')
 path_trt_opt_model = os.path.join(base_path, '/Models/RT-Model/TRT_Model.pd')
-path_to_frozen_model = os.path.join(base_path, '')
 
 # config gpu
 # tensorflow allocation memory

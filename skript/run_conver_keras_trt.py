@@ -17,7 +17,7 @@ parser.add_option("-d", "--dest",
 
 parser.add_option("-s", "--save",
                   dest="pfad_tf_model",
-                  help="pfad zur Speicherung des Tf-Models",
+                  help="ordner zur Speicherung des Tf-Models",
                   default=cfg.path_tf_model)
 
 parser.add_option("-m", "--mode",
