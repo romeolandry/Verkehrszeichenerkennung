@@ -47,9 +47,10 @@ class Optimisation_TRT:
         sess = tf.keras.backend.get_session()
         # die Graph der Tf-Session wird gespeichert
         save_path = saver.save(sess, self.__path_tf_model)
+        tf.keras.backend.clear_session()
         print("Umgewandelt und gespeichert!")
 
-    def conver_tf_to_frozen_model(self, meta_file_name, output_model):
+    def conver_tf_to_frozen_model(self):
         """
          das aus Keras-Model Generierte Tensort-Model(oder ein normales
          Tensor-Model) wird hochgeladen
@@ -60,9 +61,10 @@ class Optimisation_TRT:
         # set the memory fraction eg. 0.2 meaning tf use 20% of gpu and
         # the will bei Trt
         gpu_option = tf.GPUOptions(per_process_gpu_memory_fraction=cfg.tf_all)
+        saver = tf.train.Saver()
         with tf.Session(config=tf.ConfigProto(gpu_options=gpu_option)) as sess:
             # import of meta graph fo tensorflow model
-            path_meta_file = self.__path_tf_model + meta_file_name
+            path_meta_file = self.__path_tf_model + ".meta"
             saver = tf.train.import_meta_graph(path_meta_file)
             # print(graph)
             # exit()
@@ -71,9 +73,7 @@ class Optimisation_TRT:
 
             # specify the tensor output of the model
             output_models = [n.name for
-                             n in tf.get_default_graph().as_graph_def().node
-                             if n.name !=
-                             'conv2d/kernel_1/Read/ReadVariableOp']
+                             n in tf.get_default_graph().as_graph_def().node]
             # print(output_models)
             # exit()
             # convert to frozen model
@@ -85,7 +85,7 @@ class Optimisation_TRT:
 
             # save the frozen graph
             print("speichert!")
-            save_graph(self.__path_to_frozen_model)
+            save_graph(self.__path_to_frozen_model, frozen_graph)
             print("Frozen model wurde gespeichert!")
 
     def trt_model_von_frozen_graph(self,

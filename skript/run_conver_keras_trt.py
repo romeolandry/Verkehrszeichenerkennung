@@ -42,4 +42,4 @@ rt_optimizer.keras_to_tensor_model(trainned_config)
 
 # optimierung des Models
 # 1- tf_model -> frozen_model.pb
-rt_optimizer.conver_tf_to_frozen_model(".meta", "dense_1")
+rt_optimizer.conver_tf_to_frozen_model()

@@ -2,12 +2,12 @@ import tensorflow as tf
 from tensorflow.python.platform import gfile
 
 
-def save_graph(path):
+def save_graph(path, frozen_graph):
     """
      die Funktion hilf die .pb-Datei zu speichern
     """
     with gfile.FastGFile(path, "wb") as f:
-        f.write(trt_graph.SerializeToString())
+        f.write(frozen_graph.SerializeToString())
 
 
 def lord_model_graph(paht):
