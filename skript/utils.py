@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow.python.platform import gfile
 import config as cfg
+import time
 
 
 def save_graph(path, frozen_graph):
@@ -18,11 +19,11 @@ def save_graph_not_existed(folder_path, file_name, frozen_graph):
                                 as_text=False)
 
 
-def lord_model_graph(path):
+def loard_model_graph(path):
     """
      die Funktion hilf die .pb-Datei zu lesen
     """
-    tf.reset_default_graph()
+    # tf.reset_default_graph()
     with tf.gfile.FastGFile(path, "rb") as f:
         graph = tf.GraphDef()
         graph.ParseFromString(f.read())
@@ -34,11 +35,11 @@ def check_optimisation_change(path_frozen_graph_tf, path_frozen_graph_rt):
     Diese Funktion stell den Unterschied zwischen tf_model
     und TensorRt graph
     """
-    tf_frozen_graph = lord_model_graph(path_frozen_graph_tf)
+    tf_frozen_graph = loard_model_graph(path_frozen_graph_tf)
     all_nodes = len([1 for n in tf_frozen_graph.node])
     print("Anzahl von Noden im Tensorflow Frozen-Graph:", all_nodes)
 
-    trt_graph = lord_model_graph(path_frozen_graph_rt)
+    trt_graph = loard_model_graph(path_frozen_graph_rt)
     trt_engine = [1 for n in trt_graph.node if str(n.op) == 'TRTEngineOp']
     trt_engine_nodes = len(trt_engine)
     print("Anzahl von Engine-Noden im TensorRt Frozen-Graph:",
@@ -50,7 +51,7 @@ def check_optimisation_change(path_frozen_graph_tf, path_frozen_graph_rt):
     return(all_nodes, trt_engine_nodes, all_trt_nodes)
 
 
-def perform_model(path_frozen_graph, input_mode, output_mode, input_img):
+def perform_model(path_frozen_graph, input_node, output_node, input_img):
     """
     Diese funktion wird dazu helfen, irgenwelches Model(Tensorflow/TensorRt)
     anzuwenden
@@ -60,21 +61,24 @@ def perform_model(path_frozen_graph, input_mode, output_mode, input_img):
     with graph.as_default():
         with tf.Session(config=tf.ConfigProto(gpu_options=gpu_option)) as sess:
             print("der Graph wird gelesen!")
-            frozen_graph = lord_model_graph(path_frozen_graph)
+            frozen_graph = loard_model_graph(path_frozen_graph)
             print("der wurde gelesen!")
 
             # Auswahl von input und output
-            tf.import_graph_def(trt_graph, name='')
-            input = sess.graph.get_tensor_by_name(input_mode)
-            output = sess.graph.get_tensor_by_name(output_mode)
+            tf.import_graph_def(frozen_graph, name='')
+            input_tensor = sess.graph.get_tensor_by_name(input_node)
+            output_tensor = sess.graph.get_tensor_by_name(output_node)
 
             total_time = 0
             n_time_inference = 50
-            out_pred = sess.run(output, feed_dict={input: input_img})
+            input_img = input_img.reshape(-1, cfg.IMG_SIZE, cfg.IMG_SIZE, 3)
+            out_pred = sess.run(output_tensor,
+                                feed_dict={input_tensor: input_img})
 
             for i in range(n_time_inference):
                 t1 = time.time()
-                out_pred = sess.run(output, feed_dict={input: input_img})
+                out_pred = sess.run(output_tensor,
+                                    feed_dict={input_tensor: input_img})
                 t2 = time.time()
                 delta_time = t2 - t1
                 total_time += delta_time

@@ -3,6 +3,7 @@ import os
 
 from models.Optimisation_TRt import Optimisation_TRT
 from optparse import OptionParser
+from daten.Data_vorbebreitung import Data_vorbebreitung
 
 
 parser = OptionParser()
@@ -37,10 +38,12 @@ rt_optimizer = Optimisation_TRT(pfad_keras_model,
                                 keras_model_name)
 
 # Keras-Model umwandelt
+# diese Funktion wird tensorflow_frozen Model generiert
 rt_optimizer.keras_to_tensor_model()
 
-# optimierung des Models
-# 1- tf_model -> frozen_model.pb
-# rt_optimizer.conver_tf_to_frozen_model(output_model)
-
+# diese Funktion wird das Tensorflow-Model optimieren
 rt_optimizer.trt_model_von_frozen_graph()
+
+print("Infrence von den Beiden Model tensorflow-Model gegen tensorRT-Model")
+
+# read test Data zu testen
