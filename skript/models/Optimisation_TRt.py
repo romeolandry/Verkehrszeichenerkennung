@@ -15,12 +15,10 @@ from utils import *
 class Optimisation_TRT:
     def __init__(self,
                  path_h5_model,
-                 path_tf_model,
-                 path_rt_opt_model):
+                 path_trt_opt_model):
 
         self.__path_h5_model = path_h5_model
-        self.__path_tf_model = path_tf_model
-        self.__path_rt_opt_model = path_rt_opt_model
+        self.__path_trt_opt_model = path_trt_opt_model
 
     def keras_to_tensor_model(self):
         """
@@ -51,7 +49,7 @@ class Optimisation_TRT:
         # die Graph der Tf-Session wird gespeichert
         print("Speicherung des Tensor-Graph")
         tf.saved_model.simple_save(sess,
-                                   self.__path_tf_model,
+                                   cfg.path_tf_model,
                                    inputs=cfg.input_model,
                                    outputs=cfg.output_model)
         # Das Model wird Compilert/ gewichtet mit dem trainierten Gewichten
@@ -63,13 +61,12 @@ class Optimisation_TRT:
                                   model.outputs[0].op.name,
                                   None,
                                   None,
-                                  os.path.join(self.__path_tf_model,
-                                               cfg.tensor_frozen_name),
+                                  cfg.path_tf_frozen_model,
                                   False,
                                   "",
-                                  input_saved_model_dir=self.__path_tf_model)
+                                  input_saved_model_dir=cfg.path_tf_model)
         print("das Models wurde umgewandelt und " +
-              "gespeichert unter :{}".format(self.__path_tf_model))
+              "gespeichert unter :{}".format(cfg.path_tf_model))
         print("das Tensorflow-Frozen-Model wurde " +
               "unter der Name:{} gespeichert".format(cfg.tensor_frozen_name))
 
@@ -82,9 +79,7 @@ class Optimisation_TRT:
         """
 
         print("tensor Forzen-Model wird gelesen!")
-        frozen_pfad = os.path.join(self.__path_tf_model, "tf_frozen_model.pb")
-        print(frozen_pfad)
-        frozen_graph = lord_model_graph(frozen_pfad)
+        frozen_graph = lord_model_graph(cfg.path_tf_frozen_model)
         print("TensorRT model ergestellt!")
         print(cfg.output_model['output'])
         # exit()
@@ -101,13 +96,13 @@ class Optimisation_TRT:
             precision_mode=cfg.precision_mode
         )
         print("TensorRT model wird gespeichert!")
-        save_graph_not_existed(self.__path_rt_opt_model, trt_graph)
+        save_graph_not_existed(self.__path_trt_opt_model, trt_graph)
         print("TensorRT model wurde gespeichert!")
 
     def perfom_trt_model(self, input_mode, output_mode, input_img):
         print("Perform Trt-Model")
         Prin("Anfang!")
-        prediction = perform_model(self.__path_rt_opt_model,
+        prediction = perform_model(self.__path_trt_opt_model,
                                    input_model,
                                    output_model,
                                    input_img)
@@ -116,7 +111,7 @@ class Optimisation_TRT:
     def perfom_tft_model(self, input_mode, output_mode, input_img):
         print("Perform Tensorflow-Model")
         Prin("Anfang!")
-        prediction = perform_model(self.__path_rt_opt_model,
+        prediction = perform_model(self.__path_trt_opt_model,
                                    input_mode,
                                    output_mode,
                                    input_img)

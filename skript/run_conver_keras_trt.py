@@ -13,7 +13,7 @@ parser.add_option("-p", "--path", dest="pfad_keras_model",
 parser.add_option("-d", "--dest",
                   dest="path_trt_opt_model",
                   help="ordner von TensorRT-model",
-                  default=cfg.path_trt_opt_model)
+                  default=cfg.trt_frozen_name)
 
 (options, args) = parser.parse_args()
 
@@ -23,15 +23,20 @@ if (not options.pfad_keras_model):
 else:
     print("Datei-Name wird von dem Pfad gelesen!")
     pfad_keras_model = options.pfad_keras_model
-    pfad_dir, Datei_name = os.path.split(pfad_keras_model)
+    pfad_dir, datei_name = os.path.split(pfad_keras_model)
     print("Conten Ordner:{}".format(pfad_dir))
-    print("file name {}".format(Datei_name))
-    exit()
+    print("file name {}".format(datei_name))
+    print("keras wird geprüft!")
+    if (datei_name.split(".")[1] != "h5"):
+        print("andere Model als h5 wird übertragen!")
+    else:
+        print("Name:{}".format(name))
+        print("extension {}".format(ext))
+        cfg.keras_model_name = datei_name.split(".")[0]
 
 path_trt_opt_model = options.path_trt_opt_model
 
 rt_optimizer = Optimisation_TRT(pfad_keras_model,
-                                cfg.path_tf_model,
                                 path_trt_opt_model)
 # Keras-Model umwandelt
 rt_optimizer.keras_to_tensor_model()
