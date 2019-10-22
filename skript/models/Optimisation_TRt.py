@@ -106,7 +106,7 @@ class Optimisation_TRT:
         """
 
         print("tensor Forzen-Model wird gelesen!")
-        frozen_graph = lord_model_graph(self.__path_tf_frozen_model)
+        frozen_graph = loard_model_graph(self.__path_tf_frozen_model)
         print("TensorRT model ergestellt!")
         trt_graph = trt.create_inference_graph(
             # forzen model
