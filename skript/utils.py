@@ -1,5 +1,6 @@
 import tensorflow as tf
 from tensorflow.python.platform import gfile
+import config as cfg
 
 
 def save_graph(path, frozen_graph):

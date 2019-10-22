@@ -31,33 +31,6 @@ patience = 200
 loss = 'categorical_crossentropy'
 metrics = ["accuracy"]
 
-# Tensorflow -> tensortRT
-"""
-from pfad des keras -model wird die Name extrahieren
-bsp. ".../model_test.h5 wird "model_test" extrahieren.
-tensorflow-model wird dann gennant tf_model_from_"model_test"
-    ordner from Tensor-Model wird so aussehen:
-        tf_model_from_model_test
-                |_variable
-                |_saved_model.pb
-                |_tf_frozen_from_"model_test.pb"
-    und RT-Model wird so aussehen
-        RT-Model
-            |_trt_frozen_from_"model.pb"
-"""
-keras_model_name = ""
-
-tf_model_from_keras = "tf_model_from_" + keras_model_name
-tf_frozen_model_name = "tf_frozen_from_" + keras_model_name + ".pb"
-trt_frozen_name = "rt_frozen_from_" + keras_model_name + ".pb"
-
-path_tf_model = os.path.join(base_path, '../Models/Tensor-Model/' +
-                             tf_model_from_keras)
-path_tf_frozen_model = os.path.join(path_tf_model, tf_frozen_model_name)
-# path_h5_model = os.path.join(base_path, '../Models/Keras-Model/')
-path_trt_frozen_model = os.path.join(base_path, '../Models/RT-Model/' +
-                                     trt_frozen_name)
-
 # config gpu
 # tensorflow allocation memory
 tf_aloc = 0.5
