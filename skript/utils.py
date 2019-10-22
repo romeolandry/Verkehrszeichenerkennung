@@ -10,6 +10,13 @@ def save_graph(path, frozen_graph):
         f.write(frozen_graph.SerializeToString())
 
 
+def save_graph_not_existed(folder_path, file_name, frozen_graph):
+    tf.compat.v1.io.write_graph(frozen_graph,
+                                folder_path,
+                                file_name,
+                                as_text=False)
+
+
 def lord_model_graph(path):
     """
      die Funktion hilf die .pb-Datei zu lesen

@@ -16,25 +16,22 @@ class Optimisation_TRT:
     def __init__(self,
                  path_h5_model,
                  path_tf_model,
-                 path_rt_opt_model,
-                 path_to_frozen_model):
+                 path_rt_opt_model):
 
         self.__path_h5_model = path_h5_model
         self.__path_tf_model = path_tf_model
         self.__path_rt_opt_model = path_rt_opt_model
-        self.__path_to_frozen_model = path_to_frozen_model
 
-    def keras_to_tensor_model(self, train_config):
+    def keras_to_tensor_model(self):
         """
         diese Funktion wird ein Keras-Model in ein Tensor-Model
         Umwandeln
         """
         """ da die Batchnormalisation-Parameter im Keras
-        als trainable parameter gespeichert sind, mussen wird diese als
-        non_trainable zurücksetzen
+        als trainable parameter gespeichert sind, diese muss als
+        non_trainable zurückgesetzt.
         """
-        if train_config:
-            tf.keras.backend.set_learning_phase(0)
+        tf.keras.backend.set_learning_phase(0)
 
         print("Keras-Model wird hochgeladen!")
         try:
@@ -76,47 +73,10 @@ class Optimisation_TRT:
         print("das Tensorflow-Frozen-Model wurde " +
               "unter der Name:{} gespeichert".format(cfg.tensor_frozen_name))
 
-    """ def conver_tf_to_frozen_model(self, output_model):
-
-         das aus Keras-Model Generierte Tensort-Model(oder ein normales
-         Tensor-Model) wird hochgeladen
-         und in frozen Graph umgewandelt
-         input : tensor-Model
-         ouput : frozen graph .pd
-
-        # set the memory fraction eg. 0.2 meaning tf use 20% of gpu and
-        # the will bei Trt
-        gpu_option = tf.GPUOptions(per_process_gpu_memory_fraction=cfg.tf_all)
-        saver = tf.train.Saver()
-        with tf.Session(config=tf.ConfigProto(gpu_options=gpu_option)) as sess:
-            # import of meta graph fo tensorflow model
-            path_meta_file = self.__path_tf_model + ".meta"
-            saver = tf.train.import_meta_graph(path_meta_file)
-            # print(graph)
-            # exit()
-            # restore the weights to the meta graph
-            saver.restore(sess, self.__path_tf_model)
-
-            # specify the tensor output of the model
-            output_models = output_model
-            # print(output_models)
-            # exit()
-            # convert to frozen model
-            print("Frozen model ergestellt!")
-            frozen_graph = convert_variables_to_constants(
-                sess,
-                tf.get_default_graph().as_graph_def(),
-                output_node_names=output_models)
-
-            # save the frozen graph
-            print("speichert!")
-            save_graph(self.__path_to_frozen_model, frozen_graph)
-            print("Frozen model wurde gespeichert!")
- """
     def trt_model_von_frozen_graph(self):
         """
-        Die Funktion wird frozen lesen und daraus ein TensorRT-Model
-        aufbauen
+        Die Funktion wird tensorflow Frozen-Model lesen und daraus ein
+        TensorRT-Model aufbauen
         input : frozen graph .pd datei
         output: tensorRt- Model
         """
@@ -141,7 +101,7 @@ class Optimisation_TRT:
             precision_mode=cfg.precision_mode
         )
         print("TensorRT model wird gespeichert!")
-        save_graph("/home/kamgo/Donnees/Master_projekt/TensorRT/Verkehrszeichnerkennung/Models/RT-Model/test.pb", trt_graph)
+        save_graph_not_existed(self.__path_rt_opt_model, trt_graph)
         print("TensorRT model wurde gespeichert!")
 
     def perfom_trt_model(self, input_mode, output_mode, input_img):
