@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import PIL
 import numpy as np
 from skimage import color, exposure, transform, io
+import pandas as pd
 
 
 def save_graph(path, frozen_graph):
@@ -138,3 +139,9 @@ def save_result_perform(result_perform, titel):
     fig.suptitle('Ergebnisse ' + str(titel), fontsize=16, fontweight="bold")
     plt.savefig(cfg.pfad_to_ergebnis_bild + titel + '.png')
     plt.show()
+
+
+def read_beschreibung():
+    df = pd.read_csv(cfg.path_to_class_beschreibung, skiprows=1)
+    print(df.to_dict())
+    return df.to_dict()
