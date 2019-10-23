@@ -2,6 +2,10 @@ import tensorflow as tf
 from tensorflow.python.platform import gfile
 import config as cfg
 import time
+import matplotlib.pyplot as plt
+import PIL
+import numpy as np
+from skimage import color, exposure, transform, io
 
 
 def save_graph(path, frozen_graph):
@@ -84,4 +88,53 @@ def perform_model(path_frozen_graph, input_node, output_node, input_img):
                 total_time += delta_time
                 print("gebrauchte Zeit - " + str(i) + ": ", delta_time)
             print("mittelre Zeit: {}".format(total_time/n_time_inference))
-    return out_pred
+            mittelre_zeit = total_time/n_time_inference
+    return out_pred, mittelre_zeit
+
+
+def frame_image(img, color_name):
+
+    if(color_name == "green"):
+        color = (0.0, 125.0, 0.0)
+    else:
+        if(color_name == "red"):
+            color = (125.0, 0.0, 0.0)
+
+    border_size = 5
+    ny, nx = img.shape[0], img.shape[1]
+
+    if img.ndim == 3:
+        framed_img = np.full((border_size+ny+border_size,
+                              border_size+nx+border_size, img.shape[2]),
+                             color)
+    framed_img[border_size:-border_size, border_size:-border_size] = img
+
+    return framed_img
+
+
+def save_result_perform(result_perform, titel):
+
+    plt.rc('font', size=12)
+    plt.rcParams["figure.figsize"] = (10, 10)  # (10, 5) (with, heigth)
+    fig, axarr = plt.subplots(1, 10, squeeze=False)
+    num = 0
+    for i in range(0, len(result_perform)):
+        real_label = result_perform[i][1]
+        predicted_labe = result_perform[i][2]
+
+        color = "red"
+        if(real_label == predicted_labe):
+            color = "green"
+        real_label = real_label.replace(" ", "\n")
+        predicted_labe = predicted_labe.replace(" ", "\n")
+        axarr[0][i].text(0, 60, "\n Real:\n" + real_label +
+                         "\n\nErkannt :\n" + predicted_labe +
+                         "\nim " + str(result_perform[i][3]),
+                         color=color, verticalalignment='top',
+                         horizontalalignment='left')
+        image = frame_image(result_perform[i][0], color)
+        axarr[0][i].imshow(image)
+        axarr[0][i].axis('off')
+    fig.suptitle('Ergebnisse ' + str(titel), fontsize=16, fontweight="bold")
+    plt.savefig(cfg.pfad_to_ergebnis_bild + titel + '.png')
+    plt.show()

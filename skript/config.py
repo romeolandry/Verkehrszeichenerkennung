@@ -1,8 +1,10 @@
 import os
 import datetime
+import random
 """
 Die datei soll alle mögliche Globale Variable beinaltet
 """
+random.seed(30)
 # Daten
 
 base_path = os.getcwd()
@@ -17,6 +19,8 @@ path_to_model = os.path.join(base_path, '../Models/Keras-Model/' +
                              keras_model_name + ' _{}.h5'.format(
                                  datetime.datetime.now().strftime(
                                      "%Y_%m_%d_%H_%M_%S")))
+# pfad zur Birlder
+pfad_to_ergebnis_bild = os.path.join(base_path, '../Ergebnis/')
 
 # Model Training und Test
 IMG_SIZE = 48
