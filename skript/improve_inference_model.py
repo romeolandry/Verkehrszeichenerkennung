@@ -7,8 +7,8 @@ from utils import *
 
 base_path = os.getcwd()
 pfad_to_test_data = os.path.join(base_path, "../Daten/Final_Training/Images")
-pfad_to_tf_frozen_model = os.path.join(base_path, "../Models/Tensor-Model/tf_model_from_signs_model_Kalssifikation_2019_10_19_20_58_53/tf_frozen_from_signs_model_Kalssifikation_2019_10_19_20_58_53.pb")
-pfad_to_trt_frozen_model = os.path.join(base_path, "../Models/RT-Model/trt_frozen_from_signs_model_Kalssifikation_2019_10_19_20_58_53.pb")
+pfad_to_tf_frozen_model = os.path.join(base_path, "../Models/Tensor-Model/tf_model_from_signs_model_Kalssifikation_2019_10_19_22_51_38/tf_frozen_from_signs_model_Kalssifikation_2019_10_19_22_51_38.pb")
+pfad_to_trt_frozen_model = os.path.join(base_path, "../Models/RT-Model/trt_frozen_from_signs_model_Kalssifikation_2019_10_19_22_51_38.pb")
 
 
 csv_beschreibung = cfg.path_to_class_beschreibung
