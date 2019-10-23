@@ -119,4 +119,6 @@ venv.bak/
 /RT-Model
 # log directory
 /logs
+# Ergebnis
+*.png
 
