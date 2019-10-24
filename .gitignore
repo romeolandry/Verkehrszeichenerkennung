@@ -117,6 +117,8 @@ venv.bak/
 # tensorflow TensorRT
 /Tensor-Model
 /RT-Model
+# Frozen-Graph
+*.pb
 # log directory
 /logs
 # Ergebnis
