@@ -8,6 +8,8 @@ from tensorflow.python.keras.layers import (InputLayer, Dropout,
 from tensorflow.python.keras.callbacks import (EarlyStopping,
                                                ModelCheckpoint,
                                                TensorBoard)
+from daten.data_augmentation import keras_data_gen
+from sklearn.model_selection import train_test_split
 
 
 class Classification_test:
@@ -111,12 +113,59 @@ class Classification(Classification_test):
                              verbose=1)
         self.compile_model(model)
         print("______________Anfang des Trainings____________________")
-        model.fit(train_images, train_labels,
-                  epochs=self.__Num_epochs,
-                  batch_size=self.__batch_size, verbose=1,
-                  validation_split=self.__validation_split,
-                  callbacks=[es, mc])
+        history = model.fit(train_images,
+                            train_labels,
+                            epochs=self.__Num_epochs,
+                            batch_size=self.__batch_size,
+                            verbose=1,
+                            validation_split=self.__validation_split,
+                            callbacks=[es, mc])
         print("training fertig")
-        """ print("saving...")
-        model.save(super().get_path_to_save())
-        print("saved") """
+
+    def train_model_with_data_generator(self,
+                                        model,
+                                        train_images,
+                                        train_labels):
+        es = EarlyStopping(monitor='val_loss',
+                           mode='min',
+                           verbose=1,
+                           patience=200)
+        # modelcheckpoint
+        mc = ModelCheckpoint(super().get_path_to_save(),
+                             monitor='val_acc',
+                             mode='max',
+                             save_best_only=True,
+                             verbose=1)
+        callbak = [es, mc]
+
+        self.compile_model(model)
+        # convert input list (images and labels) to numpy array
+        images = np.array(train_images)
+        labels = np.array(train_labels)
+
+        print("shape train Image: ", images.shape)
+        print("shape train label: ", labels.shape)
+        # split train data to 75% for train and 25% for validation
+
+        train_images, val_images, train_labels, val_labels = train_test_split(
+            images,
+            labels,
+            test_size=0.25)
+
+        # generate images for training
+        train_datagen, val_datagen = keras_data_gen()
+        train_generator = train_datagen.flow(train_images,
+                                             train_labels,
+                                             batch_size=self.__batch_size)
+        # rescale image validation
+        val_generator = val_datagen.flow(val_images,
+                                         val_labels,
+                                         batch_size=self.__batch_size)
+        history = model.fit_generator(
+            train_generator,
+            steps_per_epoch=self.__Num_epochs,
+            epochs=self.__Num_epochs,
+            validation_data=val_generator,
+            validation_steps=self.__batch_size)
+
+        return history

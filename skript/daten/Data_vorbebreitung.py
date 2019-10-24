@@ -81,7 +81,7 @@ class Data_vorbebreitung:
                     # skalierte das Bild
                     gs_image = self.prepocess_img(jpg_file)
                     images.append(gs_image)
-                    labels.append(row[7])
+                    labels.append(int(row[7]))
         images = np.array(images)
         labels = np_utils.to_categorical(labels,
                                          num_classes=num_raodsign_classes)

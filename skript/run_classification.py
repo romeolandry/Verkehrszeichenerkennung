@@ -81,7 +81,10 @@ if run_mode == 'train':
 
     model = train_model.build_model()
     print("Training")
-    train_model.train_model(model, train_images[100:], train_labels[100:])
+    # train_model.train_model(model, train_images[100:], train_labels[100:]) 
+    train_model.train_model_with_data_generator(model,
+                                                train_images[0:10],
+                                                train_labels[0:10])
 else:
     # Test model
     print("#####################################")
