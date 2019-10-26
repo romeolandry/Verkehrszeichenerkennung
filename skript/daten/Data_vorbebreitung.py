@@ -49,13 +49,17 @@ class Data_vorbebreitung:
         img = transform.resize(img, (self.__IMG_SIZE, self.__IMG_SIZE))
         return img
 
-    def load_roadsigns_data(self):
+    def load_roadsigns_data(self, each_class_len):
         """
         Argument: die  Funktion nimmt als eingebe den Pfad zum Data,
         ZB.  Data/Final_Trainnig/images
         und Pfad zur Beschreibung des labels
-        Returns : numay array  von Bildern und entsprechende Labels
+        each_class_len bezeichnet die Anzahl von Bildern/Klasse, die wird im
+        Trainingset haben möchte.
+        Fall 1: wollen alle Bilder
+        Returns : list von Bildern und entsprechende Labels
         und set die Variable sign_names
+
         """
         # read csv_Datei zur sign_names
         with open(self.__path_to_description, 'r', newline='') as desc:
@@ -72,6 +76,7 @@ class Data_vorbebreitung:
             # build the path to subdirectory eg. 00000 00001
             prefix = self.__path_to_gtsrb + '/' + format(c, '05d') + '/'
             file_path = prefix + 'GT-' + format(c, '05d') + '.csv'
+            count = 0
             with open(file_path, 'r', newline='') as gt_file:
                 gt_reader = csv.reader(gt_file, delimiter=';')
                 next(gt_reader)  # header skipt of csv-file s
@@ -82,6 +87,10 @@ class Data_vorbebreitung:
                     gs_image = self.prepocess_img(jpg_file)
                     images.append(gs_image)
                     labels.append(int(row[7]))
+                    if each_class_len != 1:
+                        if count == each_class_len:
+                            break
+                    count += 1
         images = np.array(images)
         labels = np_utils.to_categorical(labels,
                                          num_classes=num_raodsign_classes)
