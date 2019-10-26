@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/kamgo/Verkehrszeichenerkennung/jupyter/../Models/tensorflow/Tensor_"
+all_model_checkpoint_paths: "/home/kamgo/Verkehrszeichenerkennung/jupyter/../Models/tensorflow/Tensor_"
