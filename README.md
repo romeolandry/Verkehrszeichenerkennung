@@ -10,12 +10,14 @@ veröffentlichen.
 
 ## Requirement
 
-- numpy==1.17.2
-- pandas==0.25.1
-- Pillow==6.2.0
-- scikit-learn==0.16.1
-- tensorflow-gpu==1.14.0
+- numpy
+- pandas
+- Pillow
+- scikit-learn
 - matplotlib
+- scikit-image
+- scikit-learn
+- tensorflow-gpu==1.14.0
 
 ## training des Models
 
