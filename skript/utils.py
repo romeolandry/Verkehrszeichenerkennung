@@ -8,6 +8,9 @@ import numpy as np
 from skimage import color, exposure, transform, io
 import pandas as pd
 
+import os
+import pathlib
+
 
 def save_graph(path, frozen_graph):
     """
@@ -145,3 +148,45 @@ def read_beschreibung():
     df = pd.read_csv(cfg.path_to_class_beschreibung, skiprows=1)
     print(df.to_dict())
     return df.to_dict()
+
+
+def save_performance_model(model_name,
+                           loss,
+                           lernrate,
+                           val_acc,
+                           val_loss):
+    dict = {'name': [model_name],
+            'loss': [loss],
+            'lernrate': [lernrate],
+            'val_acc': [val_acc],
+            'val_loss': [val_loss]}
+    df = pd.DataFrame.from_dict(dict)
+
+    # check if file exist
+    if not pathlib.Path(cfg.pfad_zu_performance_model).exists():
+        print("create new file for performance")
+        os.mknod(cfg.pfad_zu_performance_model)
+        df.to_csv(cfg.pfad_zu_performance_model, sep=';', encoding='utf-8')
+    else:
+        print("performance wird update!")
+        df.to_csv(cfg.pfad_zu_performance_model,
+                  sep=';',
+                  mode='a',
+                  header=False)
+
+        print("updated!")
+
+
+def plot_performance_models(path):
+    print("read for plot")
+    df = pd.read_csv(path, sep=';')
+    df.groupby(['name', 'val_acc']).size().unstack().plot(kind='bar',
+                                                          stacked=True)
+    plt.title("validation accuracy of all Model")
+    plt.savefig(cfg.pfad_to_ergebnis_bild + "validations.png")
+
+    df.groupby(['name', 'val_loss']).size().unstack().plot(kind='bar',
+                                                           stacked=True)
+
+    plt.title("validation losses of all Model")
+    plt.savefig(cfg.pfad_to_ergebnis_bild + "losses.png")

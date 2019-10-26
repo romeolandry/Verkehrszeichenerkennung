@@ -96,7 +96,7 @@ class Classification(Classification_test):
         model.compile(loss=self.__loss_function, optimizer=self.__optimizer,
                       metrics=self.__metrics)
 
-    def train_model(self, model, train_images, train_labels):
+    def train_model(self, model, train_images, train_labels, model_name):
         # Define the Keras TensorBoard callback.
         # logdir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
         # tensorboard_callback = TensorBoard(log_dir=logdir)
@@ -166,6 +166,7 @@ class Classification(Classification_test):
             steps_per_epoch=self.__Num_epochs,
             epochs=self.__Num_epochs,
             validation_data=val_generator,
-            validation_steps=self.__batch_size)
+            validation_steps=self.__batch_size,
+            callbacks=[es, mc])
 
         return history

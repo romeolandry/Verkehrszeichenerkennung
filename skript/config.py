@@ -9,30 +9,31 @@ random.seed(30)
 
 base_path = os.getcwd()
 
+pfad_zu_performance_model = os.path.join(base_path,
+                                         '../performance/' +
+                                         'performance_models.csv')
+
 path_to_class_beschreibung = os.path.join(base_path, '../Daten/utils/' +
                                           'Text_Beschreibung.csv')
 classes_count = 43
 
 keras_model_name = "keras_model"
 # Pfad zur Speicherung des Keras-Models
-path_to_model = os.path.join(base_path, '../Models/Keras-Model/' +
-                             keras_model_name + ' _{}.h5'.format(
-                                 datetime.datetime.now().strftime(
-                                     "%Y_%m_%d_%H_%M_%S")))
+path_to_model = os.path.join(base_path, '../Models/Keras-Model/')
 # pfad zur Birlder
 pfad_to_ergebnis_bild = os.path.join(base_path, '../Ergebnis/')
 
 # Model Training und Test
 IMG_SIZE = 48
 NUM_BATCH = 64
-NUM_EPOCHS = 1000
+NUM_EPOCHS = 50
 verborse = 1
 validation_split = 0.2
 lernrate = 0.001
-patience = 200
+patience = None
 
 
-loss = 'categorical_crossentropy'
+loss = 'kullback_leibler_divergence'
 metrics = ["accuracy"]
 
 # config gpu
