@@ -125,3 +125,5 @@ venv.bak/
 *.png
 *.ppm
 
+jupyter/train_with_data_generator.ipynb
+
