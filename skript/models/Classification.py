@@ -164,7 +164,7 @@ class Classification(Classification_test):
                                          batch_size=self.__batch_size)
         history = model.fit_generator(
             train_generator,
-            steps_per_epoch=len(train_images)/sel.__batch_size,
+            steps_per_epoch=len(train_images)/self.__batch_size,
             epochs=self.__Num_epochs,
             validation_data=val_generator,
             validation_steps=len(train_labels)/self.__batch_size,
