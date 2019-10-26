@@ -26,11 +26,11 @@ pfad_to_ergebnis_bild = os.path.join(base_path, '../Ergebnis/')
 # Model Training und Test
 IMG_SIZE = 48
 NUM_BATCH = 64
-NUM_EPOCHS = 50
+NUM_EPOCHS = 2000
 verborse = 1
 validation_split = 0.2
 lernrate = 0.001
-patience = None
+patience = round(NUM_EPOCHS/4)
 
 
 loss = 'kullback_leibler_divergence'

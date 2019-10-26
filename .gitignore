@@ -118,7 +118,7 @@ venv.bak/
 /Tensor-Model
 /RT-Model
 # Frozen-Graph
-*.pb
+/Models/Keras-Model/*.h5
 # log directory
 /logs
 # Ergebnis

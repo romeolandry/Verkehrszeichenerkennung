@@ -8,7 +8,7 @@ from tensorflow.python.keras import (losses,
                                      metrics,
                                      regularizers)
 from optparse import OptionParser
-from utils import save_performance_model, plot_performance_models
+from utils import save_performance_model, plot_performance_models, gen_data_for_train
 import config as cfg
 
 parser = OptionParser()
@@ -60,7 +60,6 @@ print("Daten werden eingelesen.....")
     train_labels, classes) = data_vorbereitung.load_roadsigns_data()
 print("Daten eingelesen!")
 # data_vorbereitung.display_roadsign_classes(train_images, 43)
-
 for loss in losses:
     for lernrate in lernrates:
         # Vorbereitung des Models
@@ -91,8 +90,8 @@ for loss in losses:
 
         history = train_model.train_model_with_data_generator(
                     model,
-                    train_images[0:100],
-                    train_labels[0:100])
+                    train_images[0:len(train_labels)/2],
+                    train_labels[0:len(train_labels)/2])
 
         print("##### max validation acc :", min(history.history['val_acc']))
         print("##### min val_loss :", max(history.history['val_loss']))
