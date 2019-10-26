@@ -14,7 +14,7 @@ veröffentlichen.
 - pandas==0.25.1
 - Pillow==6.2.0
 - scikit-learn==0.16.1
-- tensorflow-gpu==2.0.0a0
+- tensorflow-gpu==1.14.0
 - matplotlib
 
 ## training des Models
