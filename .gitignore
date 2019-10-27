@@ -107,7 +107,7 @@ venv.bak/
 /Daten/Final_Training
 /Daten/GTSRB/
 #Model_weight
-*.h5
+#*.h5
 *.hdf5
 # env
 /tensorRT
