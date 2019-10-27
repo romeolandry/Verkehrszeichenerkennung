@@ -58,7 +58,7 @@ count = 0
 print("Daten werden eingelesen.....")
 (train_images,
     train_labels,
-    classes) = data_vorbereitung.load_roadsigns_data(100)
+    classes) = data_vorbereitung.load_roadsigns_data(1)
 print("Daten eingelesen!")
 # data_vorbereitung.display_roadsign_classes(train_images, 43)
 for loss in losses:

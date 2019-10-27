@@ -105,7 +105,8 @@ class Classification(Classification_test):
         es = EarlyStopping(monitor='val_loss',
                            mode='min',
                            verbose=1,
-                           patience=200)
+                           patience=cfg.patience,
+                           min_delta=cfg.min_delta)
         # modelcheckpoint
         mc = ModelCheckpoint(super().get_path_to_save(),
                              monitor='val_acc',
@@ -138,7 +139,8 @@ class Classification(Classification_test):
         es = EarlyStopping(monitor='val_loss',
                            mode='min',
                            verbose=1,
-                           patience=200)
+                           patience=cfg.patience,
+                           min_delta=cfg.min_delta)
         # modelcheckpoint
         mc = ModelCheckpoint(super().get_path_to_save(),
                              monitor='val_acc',

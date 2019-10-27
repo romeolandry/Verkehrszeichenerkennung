@@ -31,6 +31,7 @@ verborse = 1
 validation_split = 0.2
 lernrate = 0.001
 patience = round(NUM_EPOCHS/NUM_BATCH)
+min_delta = 0.01
 
 
 loss = 'kullback_leibler_divergence'
