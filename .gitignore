@@ -106,7 +106,7 @@ venv.bak/
 # Daten
 /Daten/Final_Training
 #Model_weight
-*.h5
+#*.h5
 *.hdf5
 # env
 /tensorRT
@@ -124,6 +124,6 @@ venv.bak/
 # Ergebnis
 *.png
 *.ppm
-
+jupyter/preview
 jupyter/train_with_data_generator.ipynb
 
