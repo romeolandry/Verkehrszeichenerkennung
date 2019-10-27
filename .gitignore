@@ -125,6 +125,6 @@ venv.bak/
 # Ergebnis
 *.png
 *.ppm
-
+jupyter/preview
 jupyter/train_with_data_generator.ipynb
 
