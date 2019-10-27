@@ -44,7 +44,7 @@ tf_aloc = 0.5
 max_batch_size = 2
 max_workspace_size_bytes = 2*(10**9)
 # FP32 FP16 int8
-precision_mode = "FP32"
+precision_mode = "FP16"
 
 # tensorflow model
 output_model = {}

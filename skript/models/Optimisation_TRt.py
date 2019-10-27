@@ -128,7 +128,7 @@ class Optimisation_TRT:
               " gespeichert _#".format(self.__trt_frozen_name))
         print("#___________________________________________________#")
         print("#___________________________________________________#")
-        print("#_ Das verzeichnis ist :{}".format(self.__path_tf_frozen_model))
+        print("#Das verzeichnis ist :{}".format(self.__path_trt_frozen_model))
         print("#___________________________________________________#")
 
     def perfom_trt_model(self, input_mode, output_mode, input_img):

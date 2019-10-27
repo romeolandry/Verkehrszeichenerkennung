@@ -4,12 +4,29 @@ import os
 import numpy as np
 from daten.Data_vorbebreitung import Data_vorbebreitung
 from utils import *
+from optparse import OptionParser
 
 base_path = os.getcwd()
-pfad_to_test_data = os.path.join(base_path, "../Daten/Final_Training/Images")
-pfad_to_tf_frozen_model = os.path.join(base_path, "../Models/Tensor-Model/tf_model_from_signs_model_Kalssifikation_2019_10_19_22_51_38/tf_frozen_from_signs_model_Kalssifikation_2019_10_19_22_51_38.pb")
-pfad_to_trt_frozen_model = os.path.join(base_path, "../Models/RT-Model/trt_frozen_from_signs_model_Kalssifikation_2019_10_19_22_51_38.pb")
 
+parser = OptionParser()
+
+parser.add_option("-p", "--tf", dest="pfad_to_tf_frozen_model",
+                  help="pafd zum tensorflow-Model")
+parser.add_option("-t", "--trt", dest="pfad_to_trt_frozen_model",
+                  help="pafd zum tensorRT-Model")
+
+(options, args) = parser.parse_args()
+if (not options.pfad_to_tf_frozen_model):
+    print("sie mussen ein gültige tensorflow als Argument eingeben!")
+    exit()
+if(not options.pfad_to_trt_frozen_model):
+    print("sie mussen ein gültige tensorRT als Argument eingeben!")
+    exit()
+
+pfad_to_tf_frozen_model = options.pfad_to_tf_frozen_model
+pfad_to_trt_frozen_model = options.pfad_to_trt_frozen_model
+
+pfad_to_test_data = os.path.join(base_path, "../Daten/Final_Training/Images")
 
 csv_beschreibung = cfg.path_to_class_beschreibung
 
@@ -34,10 +51,11 @@ for test_data in zip(test_image, match_list):
                                    input_node,
                                    output_node,
                                    test_data[0])
-    predicted_label = sign_daten.get_roadsign_name(np.argmax(trt_prediction[0]))
+    pred_lab = np.argmax(trt_prediction[0])
+    predicted_label = sign_daten.get_roadsign_name(pred_lab)
     original_label = sign_daten.get_roadsign_name(np.argmax(test_data[1]))
     print("Ricttige Label ist :{}".format(original_label))
-    print("TensorRT predictec {}".format(predicted_label))
+    print("TensorRT predicted {}".format(predicted_label))
     result_to_show.append((test_data[0],
                            original_label,
                            predicted_label,
