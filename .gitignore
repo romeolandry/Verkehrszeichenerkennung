@@ -116,9 +116,9 @@ venv.bak/
 .vscode
 
 # tensorflow TensorRT
-/Tensor-Model
+/Tensor-Model/
 *.pb
-/RT-Model
+/RT-Model/
 *.pb
 # Frozen-Graph
 /Models/Keras-Model/*.h5
