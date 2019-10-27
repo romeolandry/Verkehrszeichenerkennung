@@ -116,12 +116,18 @@ venv.bak/
 .vscode
 
 # tensorflow TensorRT
-/Tensor-Model/
+
+/Tensor-Model/*
+# exception to the rule
+!/Tensor-Model/.gitkeep 
 *.pb
-/RT-Model/
+
+/RT-Model/*
+!/RT-Model/.gitkeep 
 *.pb
 # Frozen-Graph
-/Models/Keras-Model/*.h5
+/Models/Keras-Model/*
+!/Models/Keras_Model/.gitkeep
 # log directory
 /logs
 # Ergebnis

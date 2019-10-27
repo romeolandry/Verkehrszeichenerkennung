@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/kamgo/Donnees/Master_projekt/TensorRT/Verkehrszeichenerkennung/jupyter/../Models/Tensor-Model/Tensor_"
+all_model_checkpoint_paths: "/home/kamgo/Donnees/Master_projekt/TensorRT/Verkehrszeichenerkennung/jupyter/../Models/Tensor-Model/Tensor_"
