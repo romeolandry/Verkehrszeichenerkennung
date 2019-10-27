@@ -34,7 +34,7 @@ patience = round(NUM_EPOCHS/NUM_BATCH)
 min_delta = 0.01
 
 
-loss = 'kullback_leibler_divergence'
+loss = 'categorical_crossentropy'
 metrics = ["accuracy"]
 
 # config gpu
