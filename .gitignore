@@ -117,7 +117,9 @@ venv.bak/
 
 # tensorflow TensorRT
 /Tensor-Model
+*.pb
 /RT-Model
+*.pb
 # Frozen-Graph
 /Models/Keras-Model/*.h5
 # log directory
