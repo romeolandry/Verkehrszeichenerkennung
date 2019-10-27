@@ -30,7 +30,7 @@ NUM_EPOCHS = 1000
 verborse = 1
 validation_split = 0.2
 lernrate = 0.001
-patience = round(NUM_EPOCHS/5)
+patience = round(NUM_EPOCHS/NUM_BATCH)
 
 
 loss = 'kullback_leibler_divergence'
