@@ -10,6 +10,7 @@ from tensorflow.python.keras.callbacks import (EarlyStopping,
                                                TensorBoard)
 from daten.data_augmentation import keras_data_gen
 from sklearn.model_selection import train_test_split
+import config as cfg
 
 
 class Classification_test:
@@ -111,6 +112,13 @@ class Classification(Classification_test):
                              mode='max',
                              save_best_only=True,
                              verbose=1)
+        # tensorborad
+        logdir = os.path.join(cfg.pfad_zu_logs, cfg.keras_model_name)
+        tb = TensorBoard(log_dir=logdir,
+                         histogram_freq=0,
+                         write_graph=True,
+                         write_images=False,)
+        callbak = [es, mc, tb]
         self.compile_model(model)
         print("______________Anfang des Trainings____________________")
         history = model.fit(train_images,
@@ -119,8 +127,9 @@ class Classification(Classification_test):
                             batch_size=self.__batch_size,
                             verbose=1,
                             validation_split=self.__validation_split,
-                            callbacks=[es, mc])
+                            callbacks=callbak)
         print("training fertig")
+        return history
 
     def train_model_with_data_generator(self,
                                         model,
@@ -136,7 +145,13 @@ class Classification(Classification_test):
                              mode='max',
                              save_best_only=True,
                              verbose=1)
-        callbak = [es, mc]
+        # tensorborad
+        logdir = os.path.join(cfg.pfad_zu_logs, cfg.keras_model_name)
+        tb = TensorBoard(log_dir=logdir,
+                         histogram_freq=0,
+                         write_graph=True,
+                         write_images=False,)
+        callbak = [es, mc, tb]
 
         self.compile_model(model)
         # convert input list (images and labels) to numpy array
@@ -168,6 +183,5 @@ class Classification(Classification_test):
             epochs=self.__Num_epochs,
             validation_data=val_generator,
             validation_steps=len(train_labels)/self.__batch_size,
-            callbacks=[es, mc])
-
+            callbacks=callbak)
         return history
