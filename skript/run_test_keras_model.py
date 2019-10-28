@@ -35,7 +35,7 @@ else:
     path_to_gtsrb = options.path_to_gtsrb
 
 csv_beschreibung = options.csv_beschreibung
-pfad_des_model = options.pfad_des_model
+path_keras_saved_model = options.path_keras_saved_model
 
 data_vorbereitung = Data_vorbebreitung(path_to_gtsrb, cfg.IMG_SIZE,
                                        csv_beschreibung)
@@ -46,11 +46,12 @@ print("#####################################")
 print("###### Testphase #############")
 print("##################################")
 print("Daten werden eingelesen.....")
+optimizer = optimizers.Adamax(cfg.lernrate)
 test_image, match_list = data_vorbereitung.load_image_test()
 # data_vorbereitung.display_roadsign_classes(test_image, 0)
 print("Daten eingelesen!")
 test_model = Classification_test(path_keras_saved_model,
-                                 cgf.IMG_SIZE,
+                                 cfg.IMG_SIZE,
                                  cfg.classes_count)
 
 # aplying des Models

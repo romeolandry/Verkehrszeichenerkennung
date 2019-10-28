@@ -15,6 +15,10 @@ parser.add_option("-p", "--tf", dest="pfad_to_tf_frozen_model",
 parser.add_option("-t", "--trt", dest="pfad_to_trt_frozen_model",
                   help="pafd zum tensorRT-Model")
 
+parser.add_option("-i", "--image", dest="pfad_to_test_data",
+                  help="Final_Training/Images")
+
+
 (options, args) = parser.parse_args()
 if (not options.pfad_to_tf_frozen_model):
     print("sie mussen ein gültige tensorflow als Argument eingeben!")
@@ -23,11 +27,16 @@ if(not options.pfad_to_trt_frozen_model):
     print("sie mussen ein gültige tensorRT als Argument eingeben!")
     exit()
 
+if(not options.pfad_to_test_data):
+    print("sie mussen ein gültige Pfad" +
+          "zum Final_Training/Images als Argument eingeben!")
+    exit()
+
 pfad_to_tf_frozen_model = options.pfad_to_tf_frozen_model
 pfad_to_trt_frozen_model = options.pfad_to_trt_frozen_model
 
-# pfad_to_test_data = os.path.join(base_path, "../Daten/Final_Training/Images")
-pfad_to_test_data = "/home/kamgo/Downloads/GTSRB_Final_Training_Images/GTSRB/Final_Training/Images"
+pfad_to_test_data = options.pfad_to_test_data
+
 
 csv_beschreibung = cfg.path_to_class_beschreibung
 

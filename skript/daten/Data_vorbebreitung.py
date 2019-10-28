@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import PIL
 import random
+import config as cfg
 
 from PIL import Image
 from pandas import read_csv
@@ -192,4 +193,4 @@ class Data_vorbebreitung:
             axarr[0][i].axis('off')
             num += 1
         fig.suptitle('Ergebnisse', fontsize=16, fontweight="bold")
-        plt.show()
+        plt.savefig(cfg.pfad_to_ergebnis_bild + "keras_model_h5.png")
