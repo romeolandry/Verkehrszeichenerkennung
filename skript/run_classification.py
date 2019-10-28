@@ -58,12 +58,12 @@ print("##################################")
 print("Daten werden eingelesen.....")
 (train_images,
     train_labels,
-    classes) = data_vorbereitung.load_roadsigns_data(1)
+    classes) = data_vorbereitung.load_roadsigns_data(1000)
 print("Daten eingelesen!")
 # data_vorbereitung.display_roadsign_classes(train_images, 43)
 
 print("Aufbau des Models!")
-cfg.keras_model_name = "keras_model_sign"
+cfg.keras_model_name = "keras_model_sign_5"
 save_model_to = os.path.join(
     pfad_des_model,
     cfg.keras_model_name + ".h5")
@@ -96,12 +96,12 @@ else:
             train_images,
             train_labels)
 
-print("##### max validation acc :", min(history.history['val_acc']))
-print("##### min val_loss :", max(history.history['val_loss']))
+print("##### max validation acc :", max(history.history['val_acc']))
+print("##### min val_loss :", min(history.history['val_loss']))
 
-save_performance_model(cfg.keras_model_name + str(count),
-                       loss,
-                       lernrate,
+save_performance_model(cfg.keras_model_name,
+                       cfg.loss,
+                       cfg.lernrate,
                        max(history.history['val_acc']),
                        min(history.history['val_loss']))
 

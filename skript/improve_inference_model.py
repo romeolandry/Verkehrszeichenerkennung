@@ -26,7 +26,8 @@ if(not options.pfad_to_trt_frozen_model):
 pfad_to_tf_frozen_model = options.pfad_to_tf_frozen_model
 pfad_to_trt_frozen_model = options.pfad_to_trt_frozen_model
 
-pfad_to_test_data = os.path.join(base_path, "../Daten/Final_Training/Images")
+# pfad_to_test_data = os.path.join(base_path, "../Daten/Final_Training/Images")
+pfad_to_test_data = "/home/kamgo/Downloads/GTSRB_Final_Training_Images/GTSRB/Final_Training/Images"
 
 csv_beschreibung = cfg.path_to_class_beschreibung
 

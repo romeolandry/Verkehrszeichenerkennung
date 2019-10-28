@@ -105,8 +105,7 @@ class Classification(Classification_test):
         es = EarlyStopping(monitor='val_loss',
                            mode='min',
                            verbose=1,
-                           patience=cfg.patience,
-                           min_delta=cfg.min_delta)
+                           patience=cfg.patience)
         # modelcheckpoint
         mc = ModelCheckpoint(super().get_path_to_save(),
                              monitor='val_acc',
@@ -181,8 +180,8 @@ class Classification(Classification_test):
                                          batch_size=self.__batch_size)
         history = model.fit_generator(
             train_generator,
-            steps_per_epoch=len(train_images)/self.__batch_size,
             epochs=self.__Num_epochs,
+            steps_per_epoch=len(train_images)/self.__batch_size,
             validation_data=val_generator,
             validation_steps=len(train_labels)/self.__batch_size,
             callbacks=callbak)

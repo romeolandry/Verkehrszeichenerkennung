@@ -1,0 +1,4 @@
+;name;loss;lernrate;val_acc;val_loss
+0;keras_model_sign_1;categorical_crossentropy;0.001;0.0003825554740615189;51.583980560302734
+0;keras_model_sign_3;categorical_crossentropy;0.001;0.008224942721426487;51.9244014698156
+0;keras_model_sign_4;categorical_crossentropy;0.001;0.9205359220504761;0.23929755715928838
