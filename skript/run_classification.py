@@ -96,12 +96,12 @@ else:
             train_images,
             train_labels)
 
-print("##### max validation acc :", min(history.history['val_acc']))
-print("##### min val_loss :", max(history.history['val_loss']))
+print("##### max validation acc :", max(history.history['val_acc']))
+print("##### min val_loss :", min(history.history['val_loss']))
 
 save_performance_model(cfg.keras_model_name + str(count),
-                       loss,
-                       lernrate,
+                       cfg.loss,
+                       cfg.lernrate,
                        max(history.history['val_acc']),
                        min(history.history['val_loss']))
 
