@@ -97,7 +97,7 @@ class Classification(Classification_test):
         model.compile(loss=self.__loss_function, optimizer=self.__optimizer,
                       metrics=self.__metrics)
 
-    def train_model(self, model, train_images, train_labels, model_name):
+    def train_model(self, model, train_images, train_labels):
         # Define the Keras TensorBoard callback.
         # logdir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
         # tensorboard_callback = TensorBoard(log_dir=logdir)

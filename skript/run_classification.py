@@ -72,7 +72,7 @@ optimizer = optimizers.Adamax(cfg.lernrate)
 train_model = Classification(save_model_to,
                              cfg.IMG_SIZE,
                              classes,
-                             loss,
+                             cfg.loss,
                              optimizer,
                              cfg.metrics,
                              cfg.verborse,
@@ -82,20 +82,19 @@ train_model = Classification(save_model_to,
 
 model = train_model.build_model()
 print("train model :", cfg.keras_model_name)
-if options.data_gen:
+if not options.data_gen:
+    print("simple training!")
+    history = train_model.train_model(model,
+                                      train_images,
+                                      train_labels)
+
+else:
     print(options.data_gen)
     print("train wih generator")
-    exit()
     history = train_model.train_model_with_data_generator(
             model,
             train_images,
             train_labels)
-else:
-    print("simple training!")
-    exit()
-    history = train_model.train_model(model,
-                                      train_images,
-                                      train_labels)
 
 print("##### max validation acc :", min(history.history['val_acc']))
 print("##### min val_loss :", max(history.history['val_loss']))
