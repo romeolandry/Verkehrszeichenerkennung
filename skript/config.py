@@ -11,7 +11,7 @@ base_path = os.getcwd()
 
 pfad_zu_performance_model = os.path.join(base_path,
                                          '../performance/' +
-                                         'performance_models.csv')
+                                         'performance_models_vgg.csv')
 
 path_to_class_beschreibung = os.path.join(base_path, '../Daten/utils/' +
                                           'Text_Beschreibung.csv')
@@ -28,10 +28,10 @@ IMG_SIZE = 48
 NUM_BATCH = 64
 NUM_EPOCHS = 1000
 verborse = 1
-validation_split = 0.4
-lernrate = 0.001
+validation_split = 0.1
+lernrate = [1e-3, 1e-2, 1e-4, 1e-5, 3e-3, 1e-6, 1e-7]
 patience = round(NUM_EPOCHS/NUM_BATCH)
-min_delta = 0.01
+min_delta = 0.001
 
 
 loss = 'categorical_crossentropy'

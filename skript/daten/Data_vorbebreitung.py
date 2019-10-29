@@ -82,6 +82,7 @@ class Data_vorbebreitung:
                 gt_reader = csv.reader(gt_file, delimiter=';')
                 next(gt_reader)  # header skipt of csv-file s
                 for row in gt_reader:
+                    print("schon gelesen:{}".format(count))
                     # das erste Bild von jedem orden wird immer angezeigt.
                     jpg_file = Image.open(prefix + row[0])
                     # skalierte das Bild
@@ -193,4 +194,4 @@ class Data_vorbebreitung:
             axarr[0][i].axis('off')
             num += 1
         fig.suptitle('Ergebnisse', fontsize=16, fontweight="bold")
-        plt.savefig(cfg.pfad_to_ergebnis_bild + "keras_model_h5.png")
+        plt.savefig(cfg.pfad_to_ergebnis_bild + "keras_model_improve.png")

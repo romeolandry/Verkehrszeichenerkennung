@@ -2,3 +2,17 @@
 0;keras_model_sign_1;categorical_crossentropy;0.001;0.0003825554740615189;51.583980560302734
 0;keras_model_sign_3;categorical_crossentropy;0.001;0.008224942721426487;51.9244014698156
 0;keras_model_sign_4;categorical_crossentropy;0.001;0.9205359220504761;0.23929755715928838
+0;keras_model_sign_5;categorical_crossentropy;0.001;0.8965538144111633;0.3131605643146988
+0;keras_model_sign_6;categorical_crossentropy;0.001;0.02217898890376091;3.7892902864833253
+0;keras_model_sign_7;categorical_crossentropy;0.001;0.869785487651825;0.3816394494773224
+0;keras_model_sign_8;categorical_crossentropy;1e-05;0.0679331123828888;3.4839769280851596
+0;keras_model_sign_9;categorical_crossentropy;1e-05;0.07083652168512344;3.5022098878852206
+0;keras_model_sign_10;categorical_crossentropy;1e-05;0.05590125545859337;3.4970479537914327
+0;keras_model_sign_12;categorical_crossentropy;0.001;0.9542483687400818;0.13775398145168047
+0;keras_model_sign_13;categorical_crossentropy;0.01;0.0590277761220932;3.473527023215699
+0;keras_model_sign_14;categorical_crossentropy;0.0001;0.8130106329917908;0.5646597669015523
+0;keras_model_sign_15;categorical_crossentropy;0.1;0.05770016461610794;3.488499092899896
+0;keras_model_sign_16;categorical_crossentropy;0.003;0.05841503292322159;3.4945817554698273
+0;keras_model_sign_17;categorical_crossentropy;0.001;0.946282684803009;0.16369372202095642
+0;keras_model_sign_18;categorical_crossentropy;0.01;0.05943627282977104;3.4940754027148477
+0;keras_model_sign_19;categorical_crossentropy;0.0001;0.7897263169288635;0.6124445581747815

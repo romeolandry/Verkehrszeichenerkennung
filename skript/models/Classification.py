@@ -4,7 +4,7 @@ from datetime import datetime
 from tensorflow.python.keras.models import Sequential, load_model
 from tensorflow.python.keras.layers import (InputLayer, Dropout,
                                             BatchNormalization, MaxPooling2D,
-                                            Conv2D, Flatten, Dense)
+                                            Conv2D, Flatten, Dense, Dropout)
 from tensorflow.python.keras.callbacks import (EarlyStopping,
                                                ModelCheckpoint,
                                                TensorBoard)
@@ -44,6 +44,30 @@ class Classification_test:
         model.add(Conv2D(8, (3, 3), activation='relu'))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Flatten())
+        model.add(Dense(512, activation='relu'))
+        model.add(Dense(self.__output, activation='softmax'))
+        model.summary()
+        return model
+
+    def build_vgg_model(self):
+        """
+        Ich werde hier ein vgg moodel aufbauen 13-weight 64-128-256-5122-43
+        """
+        print("aufbau des vgg-13 Models")
+        model = Sequential()
+        model.add(Conv2D(filters=32, kernel_size=(3, 3),
+                         padding='same', activation='relu',
+                         input_shape=(self.__IMG_SIZE,
+                         self.__IMG_SIZE, 3),
+                         data_format="channels_last"))
+        model.add(Conv2D(64, (3, 3), activation='relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Conv2D(128, (3, 3), padding='same', activation='relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Conv2D(128, (3, 3), padding='same', activation='relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Flatten())
+        model.add(Dropout(0.5))
         model.add(Dense(512, activation='relu'))
         model.add(Dense(self.__output, activation='softmax'))
         model.summary()
@@ -181,8 +205,71 @@ class Classification(Classification_test):
         history = model.fit_generator(
             train_generator,
             epochs=self.__Num_epochs,
-            steps_per_epoch=len(train_images)/self.__batch_size,
+            steps_per_epoch=len(train_images)//self.__batch_size,
             validation_data=val_generator,
-            validation_steps=len(train_labels)/self.__batch_size,
+            # validation_steps=len(val_images)//self.__batch_size,
             callbacks=callbak)
+        return history
+
+    def train_model_gen(self,
+                        model,
+                        train_images,
+                        train_labels,
+                        all):
+        es = EarlyStopping(monitor='val_loss',
+                           mode='min',
+                           verbose=1,
+                           patience=cfg.patience)
+        # modelcheckpoint
+        mc = ModelCheckpoint(super().get_path_to_save(),
+                             monitor='val_acc',
+                             mode='max',
+                             save_best_only=True,
+                             verbose=1)
+        # tensorborad
+        logdir = os.path.join(cfg.pfad_zu_logs, cfg.keras_model_name)
+        tb = TensorBoard(log_dir=logdir,
+                         histogram_freq=0,
+                         write_graph=True,
+                         write_images=False,)
+        callbak = [es, mc, tb]
+
+        self.compile_model(model)
+        # convert input list (images and labels) to numpy array
+        images = np.array(train_images)
+        labels = np.array(train_labels)
+
+        print("shape train Image: ", images.shape)
+        print("shape train label: ", labels.shape)
+        # split train data to 75% for train and 25% for validation
+
+        train_images, val_images, train_labels, val_labels = train_test_split(
+            images,
+            labels,
+            test_size=cfg.validation_split,
+            stratify=None)
+
+        # generate images for training
+        train_datagen, val_datagen = keras_data_gen()
+        train_generator = train_datagen.flow(train_images,
+                                             train_labels,
+                                             batch_size=self.__batch_size)
+        # rescale image validation
+        val_generator = val_datagen.flow(val_images,
+                                         val_labels,
+                                         batch_size=self.__batch_size)
+        if not all:
+            history = model.fit_generator(train_generator,
+                                          epochs=self.__Num_epochs,
+                                          steps_per_epoch=len(train_images)//self.__batch_size,
+                                          validation_data=val_generator,
+                                          validation_steps=len(val_images)//self.__batch_size,
+                                          callbacks=callbak)
+        else:
+            history = model.fit_generator(train_generator,
+                                          epochs=self.__Num_epochs,
+                                          steps_per_epoch=len(images)//self.__batch_size,
+                                          validation_data=val_generator,
+                                          validation_steps=len(labels)//self.__batch_size,
+                                          callbacks=callbak)
         return history

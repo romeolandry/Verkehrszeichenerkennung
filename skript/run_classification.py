@@ -58,12 +58,12 @@ print("##################################")
 print("Daten werden eingelesen.....")
 (train_images,
     train_labels,
-    classes) = data_vorbereitung.load_roadsigns_data(1000)
+    classes) = data_vorbereitung.load_roadsigns_data(1)
 print("Daten eingelesen!")
 # data_vorbereitung.display_roadsign_classes(train_images, 43)
 
 print("Aufbau des Models!")
-cfg.keras_model_name = "keras_model_sign_5"
+cfg.keras_model_name = "keras_model_sign_10"
 save_model_to = os.path.join(
     pfad_des_model,
     cfg.keras_model_name + ".h5")
@@ -80,7 +80,7 @@ train_model = Classification(save_model_to,
                              cfg.NUM_BATCH,
                              cfg.NUM_EPOCHS)
 
-model = train_model.build_model()
+# model = train_model.build_model()
 print("train model :", cfg.keras_model_name)
 if not options.data_gen:
     print("simple training!")
@@ -89,21 +89,39 @@ if not options.data_gen:
                                       train_labels)
 
 else:
-    print(options.data_gen)
-    print("train wih generator")
-    history = train_model.train_model_with_data_generator(
-            model,
-            train_images,
-            train_labels)
+    count = 0
+    for mode in [False, True]:
+        for lernrate in cfg.lernrate:
+            cfg.keras_model_name = "keras_model_sign_vgg_" + str(count)
+            save_model_to = os.path.join(
+                pfad_des_model,
+                cfg.keras_model_name + ".h5")
+            optimizer = optimizers.Adamax(lernrate)
+            train_model = Classification(save_model_to,
+                                         cfg.IMG_SIZE,
+                                         classes,
+                                         cfg.loss,
+                                         optimizer,
+                                         cfg.metrics,
+                                         cfg.verborse,
+                                         cfg.validation_split,
+                                         cfg.NUM_BATCH,
+                                         cfg.NUM_EPOCHS)
 
-print("##### max validation acc :", max(history.history['val_acc']))
-print("##### min val_loss :", min(history.history['val_loss']))
+            model = train_model.build_vgg_model()
+            count += 1
 
-save_performance_model(cfg.keras_model_name,
-                       cfg.loss,
-                       cfg.lernrate,
-                       max(history.history['val_acc']),
-                       min(history.history['val_loss']))
+            print("train wih generator")
+            history = train_model.train_model_gen(model, train_images, train_labels, mode)
 
-print("save resume of validation and losses")
-plot_performance_models(cfg.pfad_zu_performance_model)
+            print("##### max validation acc :", max(history.history['val_acc']))
+            print("##### min val_loss :", min(history.history['val_loss']))
+
+            save_performance_model(cfg.keras_model_name,
+                                   cfg.loss,
+                                   lernrate,
+                                   max(history.history['val_acc']),
+                                   min(history.history['val_loss']))
+
+            print("save resume of validation and losses")
+            plot_performance_models(cfg.pfad_zu_performance_model)
