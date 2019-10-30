@@ -11,6 +11,7 @@ from pandas import read_csv
 from skimage import color, exposure, transform, io
 from tensorflow.python.keras.utils import np_utils
 from textwrap import wrap
+from utils import spilt_image
 
 
 class Data_vorbebreitung:
@@ -69,8 +70,11 @@ class Data_vorbebreitung:
             for row in desc_reader:
                 self.__sign_names.append(row)
         # read Images
-        images = []
-        labels = []
+        train_images = []
+        train_labels = []
+        val_images = []
+        val_labels = []
+
         num_raodsign_classes = len([pic for pic in os.listdir(
             self.__path_to_gtsrb) if not pic.startswith(".")])
         for c in range(0, num_raodsign_classes):
@@ -78,6 +82,8 @@ class Data_vorbebreitung:
             prefix = self.__path_to_gtsrb + '/' + format(c, '05d') + '/'
             file_path = prefix + 'GT-' + format(c, '05d') + '.csv'
             count = 0
+            images = []
+            labels = []
             with open(file_path, 'r', newline='') as gt_file:
                 gt_reader = csv.reader(gt_file, delimiter=';')
                 next(gt_reader)  # header skipt of csv-file s
@@ -93,10 +99,23 @@ class Data_vorbebreitung:
                         if count == each_class_len:
                             break
                     count += 1
-        images = np.array(images)
-        labels = np_utils.to_categorical(labels,
-                                         num_classes=num_raodsign_classes)
-        return images, labels, num_raodsign_classes
+                train_image, train_label, val_image, val_label = spilt_image(images, labels)
+
+                train_images.extend(train_image)
+                train_labels.extend(train_label)
+                val_images.extend(val_image)
+                val_labels.extend(val_label)
+
+        train_images = np.array(train_images)
+        train_labels = np.array(train_labels)
+        val_images = np.array(val_images)
+        val_labels = np.array(val_labels)
+        train_labels = np_utils.to_categorical(train_labels,
+                                               num_classes=num_raodsign_classes)
+        val_labels = np_utils.to_categorical(val_labels,
+                                             num_classes=num_raodsign_classes)
+
+        return train_images, train_labels, val_images, val_labels, num_raodsign_classes
 
     def get_roadsign_name(self, index):
         return self.__sign_names[index][1]

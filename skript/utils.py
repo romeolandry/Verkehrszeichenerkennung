@@ -12,6 +12,15 @@ import os
 import pathlib
 
 
+def spilt_image(image, label):
+    val_size = int(round(cfg.validation_split*len(image)))
+    train_image = image[val_size:]
+    val_image = image[:val_size]
+    train_label = label[val_size:]
+    val_label = label[:val_size]
+    return train_image, train_label, val_image, val_label
+
+
 def save_graph(path, frozen_graph):
     """
      die Funktion hilf die .pb-Datei zu speichern

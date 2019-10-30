@@ -53,9 +53,10 @@ data_vorbereitung = Data_vorbebreitung(path_to_gtsrb, cfg.IMG_SIZE,
 print("Daten werden eingelesen.....")
 (train_images,
     train_labels,
-    classes) = data_vorbereitung.load_roadsigns_data('all')
+    val_images,
+    val_labels,
+    classes) = data_vorbereitung.load_roadsigns_data(50)
 print("Daten eingelesen!")
-
 print("#####################################")
 print("###### Trainingsphase #############")
 print("##################################")
@@ -83,7 +84,10 @@ if not options.data_gen:
 
     history = train_model.train_model(model,
                                       train_images,
-                                      train_labels)
+                                      train_labels,
+                                      val_images,
+                                      val_labels)
+
     print("##### max validation acc :", max(history.history['val_acc']))
     print("##### min val_loss :", min(history.history['val_loss']))
 
@@ -113,7 +117,9 @@ if not options.data_gen:
 
     history = train_model.train_model_gen(model,
                                           train_images,
-                                          train_labels)
+                                          train_labels,
+                                          val_images,
+                                          val_labels)
     print("##### max validation acc :", max(history.history['val_acc']))
     print("##### min val_loss :", min(history.history['val_loss']))
 
@@ -142,7 +148,9 @@ if not options.data_gen:
 
     history = train_model.train_model(model,
                                       train_images,
-                                      train_labels)
+                                      train_labels,
+                                      val_images,
+                                      val_labels)
     print("##### max validation acc :", max(history.history['val_acc']))
     print("##### min val_loss :", min(history.history['val_loss']))
 
@@ -171,7 +179,9 @@ if not options.data_gen:
 
     history = train_model.train_model_gen(model,
                                           train_images,
-                                          train_labels)
+                                          train_labels,
+                                          val_images,
+                                          val_labels)
     print("##### max validation acc :", max(history.history['val_acc']))
     print("##### min val_loss :", min(history.history['val_loss']))
 
@@ -185,7 +195,9 @@ else:
     exit()
     history = train_model.train_model_gen(model,
                                           train_images,
-                                          train_labels)
+                                          train_labels,
+                                          val_images,
+                                          val_labels)
 
     print("##### max validation acc :", max(history.history['val_acc']))
     print("##### min val_loss :", min(history.history['val_loss']))

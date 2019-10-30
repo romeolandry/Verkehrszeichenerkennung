@@ -5,3 +5,4 @@
 0;keras_model_sign_vgg_ohne_gen;categorical_crossentropy;<tensorflow.python.keras.optimizers.RMSprop object at 0x7f5ddcebf2e8>;;0.0;7.486546800436218;0.2311435490846634;2.8068464684080325
 0;keras_model_sign_vgg_gen;categorical_crossentropy;<tensorflow.python.keras.optimizers.RMSprop object at 0x7f5ddcebf2e8>;;0.0234375;3.75586274266243;0.04177215322852135;3.7576642283910435
 0;keras_model_sign_simple_ohne_gen;categorical_crossentropy;<tensorflow.python.keras.optimizers.RMSprop object at 0x7f10f274cef0>;;0.05712537094950676;36.83535287497689;0.9997279644012451;0.0012617962322486922
+0;keras_model_sign_simple_gen;categorical_crossentropy;<tensorflow.python.keras.optimizers.RMSprop object at 0x7facaa70e390>;1;0.025390625;3.761207163333893;0.02437499910593033;3.7612548102239134

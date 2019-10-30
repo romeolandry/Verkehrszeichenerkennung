@@ -120,7 +120,12 @@ class Classification(Classification_test):
         model.compile(loss=self.__loss_function, optimizer=self.__optimizer,
                       metrics=self.__metrics)
 
-    def train_model(self, model, train_images, train_labels):
+    def train_model(self,
+                    model,
+                    train_images,
+                    train_labels,
+                    val_images,
+                    val_labels):
         """
         """
         es = EarlyStopping(monitor='val_loss',
@@ -151,6 +156,7 @@ class Classification(Classification_test):
         print("______________Anfang des Trainings____________________")
         history = model.fit(train_images,
                             train_labels,
+                            validation_data=(val_images, val_labels),
                             epochs=self.__Num_epochs,
                             batch_size=self.__batch_size,
                             verbose=1,
@@ -162,7 +168,10 @@ class Classification(Classification_test):
     def train_model_gen(self,
                         model,
                         train_images,
-                        train_labels):
+                        train_labels,
+                        val_images,
+                        val_labels):
+
         es = EarlyStopping(monitor='val_loss',
                            mode='min',
                            verbose=1,
@@ -178,7 +187,7 @@ class Classification(Classification_test):
         tb = TensorBoard(log_dir=logdir,
                          histogram_freq=0,
                          write_graph=True,
-                         write_images=False,)
+                         write_images=False)
         rop = ReduceLROnPlateau(
                   monitor='val_loss',
                   patience=cfg.patience - 1,
@@ -188,19 +197,6 @@ class Classification(Classification_test):
                    )
         callbak = [es, mc, tb, rop]
         self.compile_model(model)
-        # convert input list (images and labels) to numpy array
-        images = np.array(train_images)
-        labels = np.array(train_labels)
-
-        print("shape train Image: ", images.shape)
-        print("shape train label: ", labels.shape)
-        # split train data to 75% for train and 25% for validation
-
-        train_images, val_images, train_labels, val_labels = train_test_split(
-            images,
-            labels,
-            test_size=cfg.validation_split,
-            stratify=None)
 
         # generate images for training
         train_datagen, val_datagen = keras_data_gen()
