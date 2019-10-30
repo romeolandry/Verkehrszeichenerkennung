@@ -89,7 +89,7 @@ class Data_vorbebreitung:
                     gs_image = self.prepocess_img(jpg_file)
                     images.append(gs_image)
                     labels.append(int(row[7]))
-                    if each_class_len != 1:
+                    if each_class_len != 'all':
                         if count == each_class_len:
                             break
                     count += 1

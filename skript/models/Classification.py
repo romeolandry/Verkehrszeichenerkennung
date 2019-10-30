@@ -7,7 +7,8 @@ from tensorflow.python.keras.layers import (InputLayer, Dropout,
                                             Conv2D, Flatten, Dense, Dropout)
 from tensorflow.python.keras.callbacks import (EarlyStopping,
                                                ModelCheckpoint,
-                                               TensorBoard)
+                                               TensorBoard,
+                                               ReduceLROnPlateau)
 from daten.data_augmentation import keras_data_gen
 from sklearn.model_selection import train_test_split
 import config as cfg
@@ -130,8 +131,8 @@ class Classification(Classification_test):
                            patience=cfg.patience)
         # modelcheckpoint
         mc = ModelCheckpoint(super().get_path_to_save(),
-                             monitor='val_acc',
-                             mode='max',
+                             monitor='val_loss',
+                             mode='min',
                              save_best_only=True,
                              verbose=1)
         # tensorborad
@@ -140,7 +141,14 @@ class Classification(Classification_test):
                          histogram_freq=0,
                          write_graph=True,
                          write_images=False,)
-        callbak = [es, mc, tb]
+        rop = ReduceLROnPlateau(
+                  monitor='val_loss',
+                  patience=cfg.patience - 1,
+                  min_lr=1e-7,
+                  factor=0.2,
+                  verbose=0
+                   )
+        callbak = [es, mc, tb, rop]
         self.compile_model(model)
         print("______________Anfang des Trainings____________________")
         history = model.fit(train_images,
@@ -163,8 +171,8 @@ class Classification(Classification_test):
                            patience=cfg.patience)
         # modelcheckpoint
         mc = ModelCheckpoint(super().get_path_to_save(),
-                             monitor='val_acc',
-                             mode='max',
+                             monitor='val_loss',
+                             mode='min',
                              save_best_only=True,
                              verbose=1)
         # tensorborad
@@ -173,8 +181,14 @@ class Classification(Classification_test):
                          histogram_freq=0,
                          write_graph=True,
                          write_images=False,)
-        callbak = [es, mc, tb]
-
+        rop = ReduceLROnPlateau(
+                  monitor='val_loss',
+                  patience=cfg.patience - 1,
+                  min_lr=1e-7,
+                  factor=0.2,
+                  verbose=0
+                   )
+        callbak = [es, mc, tb, rop]
         self.compile_model(model)
         # convert input list (images and labels) to numpy array
         images = np.array(train_images)

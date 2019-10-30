@@ -53,34 +53,34 @@ data_vorbereitung = Data_vorbebreitung(path_to_gtsrb, cfg.IMG_SIZE,
 print("Daten werden eingelesen.....")
 (train_images,
     train_labels,
-    classes) = data_vorbereitung.load_roadsigns_data(1)
+    classes) = data_vorbereitung.load_roadsigns_data('all')
 print("Daten eingelesen!")
 
 print("#####################################")
 print("###### Trainingsphase #############")
 print("##################################")
 print("Aufbau des Models!")
-cfg.keras_model_name = "keras_model_sign_vgg_without_gen_"
-save_model_to = os.path.join(
-    pfad_des_model,
-    cfg.keras_model_name + ".h5")
+optimizer = optimizers.RMSprop()
 
-optimizer = optimizers.Adamax(cfg.lernrate)
-train_model = Classification(save_model_to,
-                             cfg.IMG_SIZE,
-                             classes,
-                             cfg.loss,
-                             optimizer,
-                             cfg.metrics,
-                             cfg.verborse,
-                             cfg.validation_split,
-                             cfg.NUM_BATCH,
-                             cfg.NUM_EPOCHS)
-
-model = train_model.build_vgg_model()
 print("train model :", cfg.keras_model_name)
 if not options.data_gen:
-    print("simple training!")
+    # ########################################################################################################
+    print("#____________________________________simple training without gen!")
+    cfg.keras_model_name = "keras_model_sign_simple_ohne_gen"
+    save_model_to = os.path.join(pfad_des_model,
+                                 cfg.keras_model_name + ".h5")
+    train_model = Classification(save_model_to,
+                                 cfg.IMG_SIZE,
+                                 classes,
+                                 cfg.loss,
+                                 optimizer,
+                                 cfg.metrics,
+                                 cfg.verborse,
+                                 cfg.validation_split,
+                                 cfg.NUM_BATCH,
+                                 cfg.NUM_EPOCHS)
+    model = train_model.build_model()  # oder build_model build_vgg_model
+
     history = train_model.train_model(model,
                                       train_images,
                                       train_labels)
@@ -89,27 +89,109 @@ if not options.data_gen:
 
     save_performance_model(cfg.keras_model_name,
                            cfg.loss,
-                           lernrate,
-                           max(history.history['val_acc']),
-                           min(history.history['val_loss']))
+                           optimizer,
+                           cfg.lernrate,
+                           history)
 
-    print("save resume of validation and losses")
-    plot_performance_models(cfg.pfad_zu_performance_model)
-else:
-    print("train wih generator")
+    #########################################################################
+    print("#____________________________________simple training with gen!")
+    cfg.keras_model_name = "keras_model_sign_simple_gen"
+    save_model_to = os.path.join(pfad_des_model,
+                                 cfg.keras_model_name + ".h5")
+    train_model = Classification(save_model_to,
+                                 cfg.IMG_SIZE,
+                                 classes,
+                                 cfg.loss,
+                                 optimizer,
+                                 cfg.metrics,
+                                 cfg.verborse,
+                                 cfg.validation_split,
+                                 cfg.NUM_BATCH,
+                                 cfg.NUM_EPOCHS)
+
+    model = train_model.build_model()  # oder build_model
+
     history = train_model.train_model_gen(model,
                                           train_images,
-                                          train_labels,
-                                          False)
-
+                                          train_labels)
     print("##### max validation acc :", max(history.history['val_acc']))
-    print("##### min val_loss :", min(history.history['val_loss'])8976b75be63d1849c0645a52e5a98831c12a2975)
+    print("##### min val_loss :", min(history.history['val_loss']))
 
     save_performance_model(cfg.keras_model_name,
                            cfg.loss,
-                           lernrate,
-                           max(history.history['val_acc']),
-                           min(history.history['val_loss']))
+                           optimizer,
+                           cfg.lernrate,
+                           history)
+    ###################################################################
+    print("#____________________________________vgg training without gen!")
+    cfg.keras_model_name = "keras_model_sign_vgg_ohne_gen"
+    save_model_to = os.path.join(pfad_des_model,
+                                 cfg.keras_model_name + ".h5")
+    train_model = Classification(save_model_to,
+                                 cfg.IMG_SIZE,
+                                 classes,
+                                 cfg.loss,
+                                 optimizer,
+                                 cfg.metrics,
+                                 cfg.verborse,
+                                 cfg.validation_split,
+                                 cfg.NUM_BATCH,
+                                 cfg.NUM_EPOCHS)
 
-    print("save resume of validation and losses")
-    plot_performance_models(cfg.pfad_zu_performance_model)
+    model = train_model.build_vgg_model()  # oder build_model
+
+    history = train_model.train_model(model,
+                                      train_images,
+                                      train_labels)
+    print("##### max validation acc :", max(history.history['val_acc']))
+    print("##### min val_loss :", min(history.history['val_loss']))
+
+    save_performance_model(cfg.keras_model_name,
+                           cfg.loss,
+                           optimizer,
+                           cfg.lernrate,
+                           history)
+    ###############################################################
+    print("#____________________________________vgg training with gen!")
+    cfg.keras_model_name = "keras_model_sign_vgg_gen"
+    save_model_to = os.path.join(pfad_des_model,
+                                 cfg.keras_model_name + ".h5")
+    train_model = Classification(save_model_to,
+                                 cfg.IMG_SIZE,
+                                 classes,
+                                 cfg.loss,
+                                 optimizer,
+                                 cfg.metrics,
+                                 cfg.verborse,
+                                 cfg.validation_split,
+                                 cfg.NUM_BATCH,
+                                 cfg.NUM_EPOCHS)
+
+    model = train_model.build_vgg_model()  # oder build_model
+
+    history = train_model.train_model_gen(model,
+                                          train_images,
+                                          train_labels)
+    print("##### max validation acc :", max(history.history['val_acc']))
+    print("##### min val_loss :", min(history.history['val_loss']))
+
+    save_performance_model(cfg.keras_model_name,
+                           cfg.loss,
+                           optimizer,
+                           cfg.lernrate,
+                           history)
+else:
+    print("train wih generator")
+    exit()
+    history = train_model.train_model_gen(model,
+                                          train_images,
+                                          train_labels)
+
+    print("##### max validation acc :", max(history.history['val_acc']))
+    print("##### min val_loss :", min(history.history['val_loss']))
+
+    save_performance_model(cfg.keras_model_name,
+                           cfg.loss,
+                           optimizer,
+                           lernrate,
+                           history)

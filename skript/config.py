@@ -11,7 +11,7 @@ base_path = os.getcwd()
 
 pfad_zu_performance_model = os.path.join(base_path,
                                          '../performance/' +
-                                         'performance_models_vgg.csv')
+                                         'performance_models_simple_vgg.csv')
 
 path_to_class_beschreibung = os.path.join(base_path, '../Daten/utils/' +
                                           'Text_Beschreibung.csv')
@@ -29,7 +29,7 @@ NUM_BATCH = 64
 NUM_EPOCHS = 1000
 verborse = 1
 validation_split = 0.25
-lernrate = 1e-7
+lernrate = None
 patience = round(NUM_EPOCHS/NUM_BATCH)
 min_delta = 0.001
 

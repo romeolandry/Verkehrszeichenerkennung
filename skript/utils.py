@@ -152,16 +152,18 @@ def read_beschreibung():
 
 def save_performance_model(model_name,
                            loss,
+                           optimizer,
                            lernrate,
-                           val_acc,
-                           val_loss):
+                           history):
     dict = {'name': [model_name],
             'loss': [loss],
+            'Optimozer': [optimizer],
             'lernrate': [lernrate],
-            'val_acc': [val_acc],
-            'val_loss': [val_loss]}
-    df = pd.DataFrame.from_dict(dict)
-
+            'val_acc': [max(history.history['val_acc'])],
+            'val_loss': [min(history.history['val_loss'])],
+            'train_acc': [max(history.history['acc'])],
+            'train_loss': [min(history.history['loss'])]}
+    df = pd.DataFrame.from_dict(dict)       
     # check if file exist
     if not pathlib.Path(cfg.pfad_zu_performance_model).exists():
         print("create new file for performance")
