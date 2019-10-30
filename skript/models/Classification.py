@@ -122,10 +122,8 @@ class Classification(Classification_test):
                       metrics=self.__metrics)
 
     def train_model(self, model, train_images, train_labels):
-        # Define the Keras TensorBoard callback.
-        # logdir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
-        # tensorboard_callback = TensorBoard(log_dir=logdir)
-        # Early stopping complex
+        """
+        """
         es = EarlyStopping(monitor='val_loss',
                            mode='min',
                            verbose=1,
@@ -155,67 +153,10 @@ class Classification(Classification_test):
         print("training fertig")
         return history
 
-    def train_model_with_data_generator(self,
-                                        model,
-                                        train_images,
-                                        train_labels):
-        es = EarlyStopping(monitor='val_loss',
-                           mode='min',
-                           verbose=1,
-                           patience=cfg.patience,
-                           min_delta=cfg.min_delta)
-        # modelcheckpoint
-        mc = ModelCheckpoint(super().get_path_to_save(),
-                             monitor='val_acc',
-                             mode='max',
-                             save_best_only=True,
-                             verbose=1)
-        # tensorborad
-        logdir = os.path.join(cfg.pfad_zu_logs, cfg.keras_model_name)
-        tb = TensorBoard(log_dir=logdir,
-                         histogram_freq=0,
-                         write_graph=True,
-                         write_images=False,)
-        callbak = [es, mc, tb]
-
-        self.compile_model(model)
-        # convert input list (images and labels) to numpy array
-        images = np.array(train_images)
-        labels = np.array(train_labels)
-
-        print("shape train Image: ", images.shape)
-        print("shape train label: ", labels.shape)
-        # split train data to 75% for train and 25% for validation
-
-        train_images, val_images, train_labels, val_labels = train_test_split(
-            images,
-            labels,
-            test_size=cfg.validation_split,
-            stratify=None)
-
-        # generate images for training
-        train_datagen, val_datagen = keras_data_gen()
-        train_generator = train_datagen.flow(train_images,
-                                             train_labels,
-                                             batch_size=self.__batch_size)
-        # rescale image validation
-        val_generator = val_datagen.flow(val_images,
-                                         val_labels,
-                                         batch_size=self.__batch_size)
-        history = model.fit_generator(
-            train_generator,
-            epochs=self.__Num_epochs,
-            steps_per_epoch=len(train_images)//self.__batch_size,
-            validation_data=val_generator,
-            # validation_steps=len(val_images)//self.__batch_size,
-            callbacks=callbak)
-        return history
-
     def train_model_gen(self,
                         model,
                         train_images,
-                        train_labels,
-                        all):
+                        train_labels):
         es = EarlyStopping(monitor='val_loss',
                            mode='min',
                            verbose=1,
@@ -258,18 +199,10 @@ class Classification(Classification_test):
         val_generator = val_datagen.flow(val_images,
                                          val_labels,
                                          batch_size=self.__batch_size)
-        if not all:
-            history = model.fit_generator(train_generator,
-                                          epochs=self.__Num_epochs,
-                                          steps_per_epoch=len(train_images)//self.__batch_size,
-                                          validation_data=val_generator,
-                                          validation_steps=len(val_images)//self.__batch_size,
-                                          callbacks=callbak)
-        else:
-            history = model.fit_generator(train_generator,
-                                          epochs=self.__Num_epochs,
-                                          steps_per_epoch=len(images)//self.__batch_size,
-                                          validation_data=val_generator,
-                                          validation_steps=len(labels)//self.__batch_size,
-                                          callbacks=callbak)
+        history = model.fit_generator(train_generator,
+                                      epochs=self.__Num_epochs,
+                                      steps_per_epoch=len(train_images)//self.__batch_size,
+                                      validation_data=val_generator,
+                                      validation_steps=len(val_images)//self.__batch_size,
+                                      callbacks=callbak)
         return history

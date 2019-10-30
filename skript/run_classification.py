@@ -49,21 +49,18 @@ pfad_des_model = options.pfad_des_model
 data_vorbereitung = Data_vorbebreitung(path_to_gtsrb, cfg.IMG_SIZE,
                                        csv_beschreibung)
 
-
-print("#####################################")
-print("###### Trainingsphase #############")
-print("##################################")
-
 # image und Labels zum Trainen werden gelesen
 print("Daten werden eingelesen.....")
 (train_images,
     train_labels,
     classes) = data_vorbereitung.load_roadsigns_data(1)
 print("Daten eingelesen!")
-# data_vorbereitung.display_roadsign_classes(train_images, 43)
 
+print("#####################################")
+print("###### Trainingsphase #############")
+print("##################################")
 print("Aufbau des Models!")
-cfg.keras_model_name = "keras_model_sign_10"
+cfg.keras_model_name = "keras_model_sign_vgg_without_gen_"
 save_model_to = os.path.join(
     pfad_des_model,
     cfg.keras_model_name + ".h5")
@@ -80,48 +77,39 @@ train_model = Classification(save_model_to,
                              cfg.NUM_BATCH,
                              cfg.NUM_EPOCHS)
 
-# model = train_model.build_model()
+model = train_model.build_vgg_model()
 print("train model :", cfg.keras_model_name)
 if not options.data_gen:
     print("simple training!")
     history = train_model.train_model(model,
                                       train_images,
                                       train_labels)
+    print("##### max validation acc :", max(history.history['val_acc']))
+    print("##### min val_loss :", min(history.history['val_loss']))
 
+    save_performance_model(cfg.keras_model_name,
+                           cfg.loss,
+                           lernrate,
+                           max(history.history['val_acc']),
+                           min(history.history['val_loss']))
+
+    print("save resume of validation and losses")
+    plot_performance_models(cfg.pfad_zu_performance_model)
 else:
-    count = 0
-    for mode in [False, True]:
-        for lernrate in cfg.lernrate:
-            cfg.keras_model_name = "keras_model_sign_vgg_" + str(count)
-            save_model_to = os.path.join(
-                pfad_des_model,
-                cfg.keras_model_name + ".h5")
-            optimizer = optimizers.Adamax(lernrate)
-            train_model = Classification(save_model_to,
-                                         cfg.IMG_SIZE,
-                                         classes,
-                                         cfg.loss,
-                                         optimizer,
-                                         cfg.metrics,
-                                         cfg.verborse,
-                                         cfg.validation_split,
-                                         cfg.NUM_BATCH,
-                                         cfg.NUM_EPOCHS)
+    print("train wih generator")
+    history = train_model.train_model_gen(model,
+                                          train_images,
+                                          train_labels,
+                                          False)
 
-            model = train_model.build_vgg_model()
-            count += 1
+    print("##### max validation acc :", max(history.history['val_acc']))
+    print("##### min val_loss :", min(history.history['val_loss'])8976b75be63d1849c0645a52e5a98831c12a2975)
 
-            print("train wih generator")
-            history = train_model.train_model_gen(model, train_images, train_labels, mode)
+    save_performance_model(cfg.keras_model_name,
+                           cfg.loss,
+                           lernrate,
+                           max(history.history['val_acc']),
+                           min(history.history['val_loss']))
 
-            print("##### max validation acc :", max(history.history['val_acc']))
-            print("##### min val_loss :", min(history.history['val_loss']))
-
-            save_performance_model(cfg.keras_model_name,
-                                   cfg.loss,
-                                   lernrate,
-                                   max(history.history['val_acc']),
-                                   min(history.history['val_loss']))
-
-            print("save resume of validation and losses")
-            plot_performance_models(cfg.pfad_zu_performance_model)
+    print("save resume of validation and losses")
+    plot_performance_models(cfg.pfad_zu_performance_model)
