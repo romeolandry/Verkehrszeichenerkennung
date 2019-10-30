@@ -78,17 +78,15 @@ class Classification_test:
         raise NotImplementedError("muss die Methde in" +
                                   "ClassificationsKlasse überschreiben!")
 
-    def test_model(self, optimizer, metric, loss, images):
+    def test_model(self, images):
         """
         test_model recieve a list of images: all images shall as be resize (-1,
         IMG_SIZE,IMG_SIZE,3)
         """
         #  Model build
         print("das Model wird aufgebaut und compile")
-        model = self.build_model()
-        model.load_weights(self.__path_to_save)
-        """ model.compile(loss=loss, optimizer=optimizer,
-                      metrics=metric) """
+        # model = self.build_model()
+        model = load_model(self.__path_to_save)
         roadsign_images = []
         predicted_class = []
         print("prediction")

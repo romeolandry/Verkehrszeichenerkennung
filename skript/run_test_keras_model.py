@@ -56,11 +56,9 @@ test_model = Classification_test(path_keras_saved_model,
 
 # aplying des Models
 print("Anwendung des Modells")
-roadsign_images, predicted_classes = test_model.test_model(optimizer,
-                                                           cfg.metrics,
-                                                           cfg.loss,
-                                                           test_image)
+roadsign_images, predicted_classes = test_model.test_model(test_image)
 # framed_img = utilis.frame_image
 data_vorbereitung.display_prediction_vs_real_classes(roadsign_images,
                                                      match_list,
-                                                     predicted_classes)
+                                                     predicted_classes,
+                                                     "test")

@@ -163,7 +163,7 @@ class Data_vorbebreitung:
         return framed_img
 
     def display_prediction_vs_real_classes(self, roadsign_images, match_list,
-                                           predicted_classes):
+                                           predicted_classes, file_name):
         roadsign_lables = []
         predicted_labels = []
         for prediction in zip(roadsign_images, match_list, predicted_classes):
@@ -194,4 +194,4 @@ class Data_vorbebreitung:
             axarr[0][i].axis('off')
             num += 1
         fig.suptitle('Ergebnisse', fontsize=16, fontweight="bold")
-        plt.savefig(cfg.pfad_to_ergebnis_bild + "keras_model_improve.png")
+        plt.savefig(cfg.pfad_to_ergebnis_bild + file_name + ".png")
