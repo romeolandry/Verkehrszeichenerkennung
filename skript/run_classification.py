@@ -55,19 +55,19 @@ print("Daten werden eingelesen.....")
     train_labels,
     val_images,
     val_labels,
-    classes) = data_vorbereitung.load_roadsigns_data(50)
+    classes) = data_vorbereitung.load_roadsigns_data('all')
 print("Daten eingelesen!")
 print("#####################################")
 print("###### Trainingsphase #############")
 print("##################################")
 print("Aufbau des Models!")
-optimizer = optimizers.RMSprop()
+optimizer = optimizers.adam(lr=cfg.lernrate)
 
 print("train model :", cfg.keras_model_name)
 if not options.data_gen:
     # ########################################################################################################
     print("#____________________________________simple training without gen!")
-    cfg.keras_model_name = "keras_model_sign_simple_ohne_gen"
+    cfg.keras_model_name = "keras_model_sign_simple_rop_ohne_gen_3"
     save_model_to = os.path.join(pfad_des_model,
                                  cfg.keras_model_name + ".h5")
     train_model = Classification(save_model_to,
@@ -98,8 +98,8 @@ if not options.data_gen:
                            history)
 
     #########################################################################
-    print("#____________________________________simple training with gen!")
-    cfg.keras_model_name = "keras_model_sign_simple_gen"
+    print("#____________________________________simple training with gen_1!")
+    cfg.keras_model_name = "keras_model_sign_simple_rop_gen_3"
     save_model_to = os.path.join(pfad_des_model,
                                  cfg.keras_model_name + ".h5")
     train_model = Classification(save_model_to,
@@ -129,8 +129,8 @@ if not options.data_gen:
                            cfg.lernrate,
                            history)
     ###################################################################
-    print("#____________________________________vgg training without gen!")
-    cfg.keras_model_name = "keras_model_sign_vgg_ohne_gen"
+    print("#____________________________________vgg training without gen_1!")
+    cfg.keras_model_name = "keras_model_sign_rop_vgg_ohne_gen_3"
     save_model_to = os.path.join(pfad_des_model,
                                  cfg.keras_model_name + ".h5")
     train_model = Classification(save_model_to,
@@ -161,7 +161,7 @@ if not options.data_gen:
                            history)
     ###############################################################
     print("#____________________________________vgg training with gen!")
-    cfg.keras_model_name = "keras_model_sign_vgg_gen"
+    cfg.keras_model_name = "keras_model_sign_rop_vgg_gen_3"
     save_model_to = os.path.join(pfad_des_model,
                                  cfg.keras_model_name + ".h5")
     train_model = Classification(save_model_to,

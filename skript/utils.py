@@ -201,3 +201,18 @@ def plot_performance_models(path):
 
     plt.title("validation losses of all Model")
     plt.savefig(cfg.pfad_to_ergebnis_bild + "losses.png")
+
+
+def loard_all_model_for_test(csv_pfad_performance):
+    """ Input Csv
+        out_put= list tupel (model_name,path_zu_model)
+    """
+    list_model_name = []
+    with open(csv_pfad_performance) as f:
+        list = [line.split(';') for line in f]
+        list.pop(0)
+        for elet in list:
+            save_model_to = os.path.join(cfg.path_to_model, elet[1] + ".h5")
+            list_model_name.append((elet[1],
+                                    save_model_to))
+    return list_model_name

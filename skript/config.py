@@ -29,7 +29,7 @@ NUM_BATCH = 64
 NUM_EPOCHS = 1000
 verborse = 1
 validation_split = 0.25
-lernrate = 1
+lernrate = 1e-5
 patience = round(NUM_EPOCHS/NUM_BATCH)
 min_delta = 0.001
 

@@ -152,14 +152,18 @@ class Data_vorbebreitung:
         match_list = []
         pictures_directories = [pic for pic in os.listdir(self.__path_to_gtsrb)
                                 if not pic.startswith(".")]
-        num_raodsign_classes = len(pictures_directories)
-        for n, directory_path, in enumerate(random.sample(pictures_directories,
-                                            num_raodsign_classes)):
+
+        num_classes = len(pictures_directories)
+        for n, directory_path in enumerate(random.sample(pictures_directories,
+                                                         num_classes)):
+            print("classe :", int(directory_path))
+            classe = int(directory_path)
             directory_path = os.path.join(self.__path_to_gtsrb, directory_path)
+            print(" dir pfad: ", directory_path)
             image = self.prepocess_img(Image.open(directory_path +
                                                   "/00002_00021.ppm"))
             image_to_predict.append(image)
-            match_list.append(n)
+            match_list.append(classe)
         return image_to_predict, match_list
 
     def frame_image(self, img, color_name):
@@ -194,10 +198,10 @@ class Data_vorbebreitung:
                                                    self.get_roadsign_name(
                                                        prediction[2]), 15)))
         plt.rc('font', size=12)
-        plt.rcParams["figure.figsize"] = (10, 5)  # (10, 5) (with, heigth)
-        fig, axarr = plt.subplots(1, 10, squeeze=False)
+        plt.rcParams["figure.figsize"] = (10, 10)  # (10, 5) (with, heigth)
+        fig, axarr = plt.subplots(1, 5, squeeze=False)
         num = 0
-        for i in range(0, 10):
+        for i in range(0, 5):
             roadsign_name = roadsign_lables[num]
             predicted_roadsign_name = predicted_labels[num]
 
@@ -212,5 +216,5 @@ class Data_vorbebreitung:
             axarr[0][i].imshow(image)
             axarr[0][i].axis('off')
             num += 1
-        fig.suptitle('Ergebnisse', fontsize=16, fontweight="bold")
+        fig.suptitle(file_name, fontsize=16, fontweight="bold")
         plt.savefig(cfg.pfad_to_ergebnis_bild + file_name + ".png")

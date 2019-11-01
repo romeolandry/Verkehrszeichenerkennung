@@ -52,9 +52,9 @@ class Classification_test:
 
     def build_vgg_model(self):
         """
-        Ich werde hier ein vgg moodel aufbauen 13-weight 64-128-256-5122-43
+        Ich werde hier ein vgg moodel aufbauen 11-weight 64-128-256-5122-43
         """
-        print("aufbau des vgg-13 Models")
+        print("aufbau des vgg-11 Models")
         model = Sequential()
         model.add(Conv2D(filters=32, kernel_size=(3, 3),
                          padding='same', activation='relu',
@@ -83,9 +83,6 @@ class Classification_test:
         test_model recieve a list of images: all images shall as be resize (-1,
         IMG_SIZE,IMG_SIZE,3)
         """
-        #  Model build
-        print("das Model wird aufgebaut und compile")
-        # model = self.build_model()
         model = load_model(self.__path_to_save)
         roadsign_images = []
         predicted_class = []
@@ -128,14 +125,14 @@ class Classification(Classification_test):
                     val_labels):
         """
         """
-        es = EarlyStopping(monitor='val_loss',
-                           mode='min',
+        es = EarlyStopping(monitor='loss',
+                           mode='max',
                            verbose=1,
                            patience=cfg.patience)
         # modelcheckpoint
         mc = ModelCheckpoint(super().get_path_to_save(),
-                             monitor='val_loss',
-                             mode='min',
+                             monitor='acc',
+                             mode='max',
                              save_best_only=True,
                              verbose=1)
         # tensorborad
@@ -143,15 +140,9 @@ class Classification(Classification_test):
         tb = TensorBoard(log_dir=logdir,
                          histogram_freq=0,
                          write_graph=True,
-                         write_images=False,)
-        rop = ReduceLROnPlateau(
-                  monitor='val_loss',
-                  patience=cfg.patience - 1,
-                  min_lr=1e-7,
-                  factor=0.2,
-                  verbose=0
-                   )
-        callbak = [es, mc, tb, rop]
+                         write_images=False)
+
+        callbak = [es, mc, tb]
         self.compile_model(model)
         print("______________Anfang des Trainings____________________")
         history = model.fit(train_images,
@@ -172,14 +163,14 @@ class Classification(Classification_test):
                         val_images,
                         val_labels):
 
-        es = EarlyStopping(monitor='val_loss',
+        es = EarlyStopping(monitor='loss',
                            mode='min',
                            verbose=1,
                            patience=cfg.patience)
         # modelcheckpoint
         mc = ModelCheckpoint(super().get_path_to_save(),
-                             monitor='val_loss',
-                             mode='min',
+                             monitor='acc',
+                             mode='max',
                              save_best_only=True,
                              verbose=1)
         # tensorborad
@@ -188,14 +179,8 @@ class Classification(Classification_test):
                          histogram_freq=0,
                          write_graph=True,
                          write_images=False)
-        rop = ReduceLROnPlateau(
-                  monitor='val_loss',
-                  patience=cfg.patience - 1,
-                  min_lr=1e-7,
-                  factor=0.2,
-                  verbose=0
-                   )
-        callbak = [es, mc, tb, rop]
+
+        callbak = [es, mc, tb]
         self.compile_model(model)
 
         # generate images for training
