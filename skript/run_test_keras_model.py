@@ -90,4 +90,4 @@ else:
     data_vorbereitung.display_prediction_vs_real_classes(roadsign_images,
                                                          match_list,
                                                          predicted_classes,
-                                                         "Test Model")
+                                                         "keras_model_sign_vgg_ohne_gen")
