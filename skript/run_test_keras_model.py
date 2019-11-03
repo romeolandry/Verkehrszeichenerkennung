@@ -3,10 +3,7 @@ import sys
 import tensorflow as tf
 from daten.Data_vorbebreitung import Data_vorbebreitung
 from models.Classification import Classification, Classification_test
-from tensorflow.python.keras import (losses,
-                                     optimizers,
-                                     metrics,
-                                     regularizers)
+
 from optparse import OptionParser
 from utils import save_performance_model, loard_all_model_for_test
 import config as cfg
@@ -60,8 +57,10 @@ print("#####################################")
 print("###### Testphase #############")
 print("##################################")
 print("Daten werden eingelesen.....")
-optimizer = optimizers.Adamax(cfg.lernrate)
+
+
 test_image, match_list = data_vorbereitung.load_image_test()
+
 print("Daten eingelesen!")
 if csv_for_model is not None:
     list_name_pfad = loard_all_model_for_test(csv_for_model)
