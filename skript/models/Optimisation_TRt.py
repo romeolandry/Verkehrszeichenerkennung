@@ -75,10 +75,15 @@ class Optimisation_TRT:
         cfg.output_model["output"] = model.outputs[0]
         # die Graph der Tf-Session wird gespeichert
         print("Speicherung des Tensor-Graph")
-        tf.saved_model.simple_save(sess,
-                                   self.__path_tf_model,
-                                   inputs=cfg.input_model,
-                                   outputs=cfg.output_model)
+        try:
+            tf.saved_model.simple_save(sess,
+                                       self.__path_tf_model,
+                                       inputs=cfg.input_model,
+                                       outputs=cfg.output_model)
+        except AssertionError:
+            print("es existiert schon ein Model mit dem gleichen Namen")
+            print("Diese keras-Model wurde schon Umgewandelt")
+
         # Das Model wird Compilert/ gewichtet mit dem trainierten Gewichten
         print("Compilierung des Models!")
         freeze_graph.freeze_graph(None,
@@ -96,6 +101,7 @@ class Optimisation_TRT:
         print("_das Models wurde umgewandelt und " +
               "gespeichert unter :{} _#".format(self.__path_tf_model))
         print("#___________________________________________________#")
+        return os.path.join(self.__path_tf_model, self.__tf_frozen_model_name)
 
     def trt_model_von_frozen_graph(self):
         """
@@ -126,6 +132,7 @@ class Optimisation_TRT:
         print("#___________________________________________________#")
         print("#Das verzeichnis ist :{}".format(self.__path_trt_frozen_model))
         print("#___________________________________________________#")
+        return self.__path_trt_frozen_model
 
     def perfom_trt_model(self, input_mode, output_mode, input_img):
         print("Perform Trt-Model")

@@ -4,6 +4,7 @@ import os
 from models.Optimisation_TRt import Optimisation_TRT
 from optparse import OptionParser
 from daten.Data_vorbebreitung import Data_vorbebreitung
+from utils import check_optimisation_change
 
 
 parser = OptionParser()
@@ -25,25 +26,28 @@ else:
     print("keras wird geprüft!")
     if (datei_name.split(".")[1] != "h5"):
         print("#______________________________________________#")
-        print("andere Model als h5 wird übertragen!")
+        print("andere Model als h5 wird nicht übertragen!")
         print("Geben sie bitte ein .h5 keras Model")
         print("#______________________________________________#")
+        exit()
     else:
+        keras_model_name = datei_name.split(".")[0]
         print("#______________________________________________#")
         print("#___________Wurzel von der Modelnamen__________#")
+        print(datei_name.split(".")[0])
         print("#______________________________________________#")
-        keras_model_name = datei_name.split(".")[0]
 
 rt_optimizer = Optimisation_TRT(pfad_keras_model,
                                 keras_model_name)
 
 # Keras-Model umwandelt
 # diese Funktion wird tensorflow_frozen Model generiert
-rt_optimizer.keras_to_tensor_model()
+path_tf = rt_optimizer.keras_to_tensor_model()
 
 # diese Funktion wird das Tensorflow-Model optimieren
-rt_optimizer.trt_model_von_frozen_graph()
+path_trt = rt_optimizer.trt_model_von_frozen_graph()
 
 print("Infrence von den Beiden Model tensorflow-Model gegen tensorRT-Model")
+check_optimisation_change(path_tf, path_trt)
 
 # read test Data zu testen

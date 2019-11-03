@@ -47,7 +47,7 @@ def loard_model_graph(path):
     return graph
 
 
-def check_optimisation_change(path_frozen_graph_tf, path_frozen_graph_rt):
+def check_optimisation_change(path_frozen_graph_tf, path_frozen_graph_trt):
     """
     Diese Funktion stell den Unterschied zwischen tensorflow-Graph
     und TensorRt-Graph
@@ -56,16 +56,14 @@ def check_optimisation_change(path_frozen_graph_tf, path_frozen_graph_rt):
     all_nodes = len([1 for n in tf_frozen_graph.node])
     print("Anzahl von Noden im Tensorflow Frozen-Graph:", all_nodes)
 
-    trt_graph = loard_model_graph(path_frozen_graph_rt)
+    trt_graph = loard_model_graph(path_frozen_graph_trt)
     trt_engine = [1 for n in trt_graph.node if str(n.op) == 'TRTEngineOp']
     trt_engine_nodes = len(trt_engine)
     print("Anzahl von Engine-Noden im TensorRt Frozen-Graph:",
           trt_engine_nodes)
     all_trt_nodes = [1 for n in trt_graph.node]
     print("Anzahl von Noden im TensorRt Frozen-Graph:",
-          all_trt_nodes)
-
-    return(all_nodes, trt_engine_nodes, all_trt_nodes)
+          len(all_trt_nodes))
 
 
 def perform_model(path_frozen_graph, input_node, output_node, input_img):
