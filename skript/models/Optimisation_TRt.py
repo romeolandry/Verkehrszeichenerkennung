@@ -123,10 +123,6 @@ class Optimisation_TRT:
         print("TensorRT model wird gespeichert!")
         save_graph(self.__path_trt_frozen_model, trt_graph)
         print("#___________________________________________________#")
-        print("#_TensorRT model wurde gespeichert " +
-              "unter der Name:{}" +
-              " gespeichert _#".format(self.__trt_frozen_name))
-        print("#___________________________________________________#")
         print("#___________________________________________________#")
         print("#Das verzeichnis ist :{}".format(self.__path_trt_frozen_model))
         print("#___________________________________________________#")
