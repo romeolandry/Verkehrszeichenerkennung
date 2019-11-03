@@ -49,8 +49,8 @@ def loard_model_graph(path):
 
 def check_optimisation_change(path_frozen_graph_tf, path_frozen_graph_rt):
     """
-    Diese Funktion stell den Unterschied zwischen tf_model
-    und TensorRt graph
+    Diese Funktion stell den Unterschied zwischen tensorflow-Graph
+    und TensorRt-Graph
     """
     tf_frozen_graph = loard_model_graph(path_frozen_graph_tf)
     all_nodes = len([1 for n in tf_frozen_graph.node])
