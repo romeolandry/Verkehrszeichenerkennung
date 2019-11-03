@@ -1,0 +1,5 @@
+;name;loss;Optimozer;lernrate;val_acc;val_loss;train_acc;train_loss
+0;keras_model_sign_simple_gen_3;categorical_crossentropy;<tensorflow.python.keras.optimizers.Adam object at 0x7f10be877358>;1e-05;0.014204545877873898;3.761194019606619;0.024420594796538353;3.76119867281959
+0;keras_model_sign_vgg_gen;categorical_crossentropy;<tensorflow.python.keras.optimizers.Adam object at 0x7f10be877358>;1e-05;0.04308712109923363;3.761142434495868;0.023020686581730843;3.761174220804442
+0;keras_model_sign_simple_ohne_data;categorical_crossentropy;<tensorflow.python.keras.optimizers.Adam object at 0x7f10be877358>;1e-05;0.038604650646448135;3.7595278453826904;0.023871861398220062;3.7604007875902816
+0;keras_model_sign_vgg_ohne_gen;categorical_crossentropy;<tensorflow.python.keras.optimizers.Adam object at 0x7f10be877358>;1e-05;0.03999999910593033;3.72824058399644;0.033266596496105194;3.741175494318142

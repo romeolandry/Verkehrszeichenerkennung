@@ -1,6 +1,9 @@
 import os
 import datetime
 import random
+
+from tensorflow.python.keras import optimizers
+
 """
 Die datei soll alle mögliche Globale Variable beinaltet
 """
@@ -11,7 +14,7 @@ base_path = os.getcwd()
 
 pfad_zu_performance_model = os.path.join(base_path,
                                          '../performance/' +
-                                         'performance_models_simple_vgg.csv')
+                                         'test.csv')
 
 path_to_class_beschreibung = os.path.join(base_path, '../Daten/utils/' +
                                           'Text_Beschreibung.csv')
@@ -23,19 +26,30 @@ path_to_model = os.path.join(base_path, '../Models/Keras-Model/')
 # pfad zur Birlder
 pfad_to_ergebnis_bild = os.path.join(base_path, '../Ergebnis/')
 pfad_zu_logs = os.path.join(base_path, '../logs')
-# Model Training und Test
+# Training und Test des  Models
 IMG_SIZE = 48
 NUM_BATCH = 64
-NUM_EPOCHS = 1000
+NUM_EPOCHS = 1
 verborse = 1
 validation_split = 0.25
 lernrate = 1e-5
 patience = round(NUM_EPOCHS/NUM_BATCH)
 min_delta = 0.001
 
+# welches Model wird trainiert
+# set false fall das Model nicht trainiert sein wird
+simple_model = True
+simple_vgg = True
 
+# Das training wird durch gelaufen werden mit Data_generator
+# set false wenn es auf Data-generator vertichtet sein werden
+data_gen = True
+ohne_gen = True
+
+# Das training Parametern
 loss = 'categorical_crossentropy'
 metrics = ["accuracy"]
+optimizer = optimizers.adam(lr=lernrate)
 
 # config gpu
 # tensorflow allocation memory
