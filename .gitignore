@@ -105,6 +105,7 @@ venv.bak/
 
 # Daten
 /Daten/Final_Training
+/Daten/Final_Test
 /Daten/GTSRB/
 #Model_weight
 *.h5
