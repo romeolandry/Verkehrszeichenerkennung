@@ -107,9 +107,7 @@ venv.bak/
 /Daten/Final_Training
 /Daten/Final_Test
 /Daten/GTSRB/
-#Model_weight
-*.h5
-*.hdf5
+
 # env
 /tensorRT
 /tensorRT3.6
@@ -119,8 +117,7 @@ venv.bak/
 # tensorflow TensorRT
 Models/Tensor-Model/*
 # exception to the rule
-!Models/Tensor-Model/.gitkeep 
-*.pb
+!Models/Tensor-Model/.gitkeep
 
 RT-Model/*
 !Models/RT-Model/.gitkeep 
