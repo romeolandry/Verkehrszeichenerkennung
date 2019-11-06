@@ -131,8 +131,10 @@ RT-Model/*
 # log directory
 /logs
 # Ergebnis
-*.png
-*.ppm
+Ergebnis/*.png
+Ergebnis/*.ppm
+# jupyter
+
 jupyter/preview
 jupyter/train_with_data_generator.ipynb
 
